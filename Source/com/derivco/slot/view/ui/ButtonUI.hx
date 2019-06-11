@@ -7,6 +7,8 @@ class ButtonUI extends UIClip {
 
     private var _enabled:Bool = true;
 
+    private var scaleOrigin:Float;
+
     public function new(assets:Sprite) {
         super(assets);
     }
@@ -15,6 +17,8 @@ class ButtonUI extends UIClip {
     {
         super.init();
 
+        scaleOrigin = _assets.scaleX;
+
         _assets.addEventListener(MouseEvent.MOUSE_DOWN, down);
         _assets.addEventListener(MouseEvent.CLICK, click);
         _assets.addEventListener(MouseEvent.MOUSE_UP, up);
@@ -22,19 +26,19 @@ class ButtonUI extends UIClip {
     }
 
     private function outside(e:Event):Void {
-        _assets.scaleX = _assets.scaleY = 1.0;
+        _assets.scaleX = _assets.scaleY = 1.0 * scaleOrigin;
     }
 
     private function click(e:Event):Void {
-        _assets.scaleX = _assets.scaleY = 1.0;
+        _assets.scaleX = _assets.scaleY = 1.0 * scaleOrigin;
     }
 
     private function down(e:Event):Void {
-        _assets.scaleX = _assets.scaleY = 1.05;
+        _assets.scaleX = _assets.scaleY = 1.05 * scaleOrigin;
     }
 
     private function up(e:Event):Void {
-        _assets.scaleX = _assets.scaleY = 1.0;
+        _assets.scaleX = _assets.scaleY = 1.0 * scaleOrigin;
     }
 
     private function get_enabled():Bool {

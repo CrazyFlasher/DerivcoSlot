@@ -55,7 +55,9 @@ class AppContext implements IAppContext {
     private function createViews(event:Event):Void
     {
         view = new AppView(this, viewRoot);
-        view.addEventListener(Std.string(AppViewEvent.SPIN), function(e:Event):Void {controller.spin();});
+        view.addEventListener(Std.string(AppViewEvent.SPIN), function(e:Event):Void {
+            controller.spin().calculateWin();
+        });
     }
 
     function get_appModel():IAppModel {

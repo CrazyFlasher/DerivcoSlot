@@ -4,7 +4,7 @@
 	<meta title="DerivcoSlot" package="com.sample.derivcoslot" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="DerivcoSlot" />
 
-	<window if="html5 || flash" width="1024" height="768" fps="60"/>
+	<window if="html5 || flash" width="600" height="340" fps="60"/>
 
 	<source path="Source" />
 	

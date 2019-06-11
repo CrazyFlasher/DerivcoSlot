@@ -22,6 +22,29 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel{
         _payout = json.payout;
     }
 
+    public function getWin(lineSymbolList:Array<String>, lineId:String):Int {
+
+        var currentLineSymbols:Array<String> = lineSymbolList.copy();
+
+        if (_lineId == null || _lineId == lineId)
+        {
+            for (symbolId in _symbolIdList)
+            {
+                if (currentLineSymbols.indexOf(symbolId) == -1)
+                {
+                    return 0;
+                }
+
+                currentLineSymbols.remove(symbolId);
+            }
+
+            trace("getWin: " + lineSymbolList + ": " + lineId + ": payout " + _payout);
+            return _payout;
+        }
+
+        return 0;
+    }
+
     private function get_lineId():String {
         return _lineId;
     }

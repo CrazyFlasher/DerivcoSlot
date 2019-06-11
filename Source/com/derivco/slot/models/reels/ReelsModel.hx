@@ -28,8 +28,6 @@ class ReelsModel extends BaseModel implements IReelsModel {
             _reelListImmutable.push(reelModel);
         }
 
-//        spin();
-
         dispatchEvent(new Event(Std.string(ReelsModelEvent.POPULATED)));
     }
 

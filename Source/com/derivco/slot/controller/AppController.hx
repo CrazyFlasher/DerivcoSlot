@@ -50,4 +50,12 @@ class AppController extends EventDispatcher implements IAppController {
         return this;
     }
 
+    public function calculateWin():IAppController {
+
+        payTableModel.calculateWin(reelsModel);
+
+        return this;
+    }
+
+
 }

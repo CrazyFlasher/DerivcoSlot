@@ -3,4 +3,5 @@ import openfl.events.IEventDispatcher;
 interface IAppController extends IEventDispatcher {
     function loadResources():IAppController;
     function spin():IAppController;
+    function calculateWin():IAppController;
 }
