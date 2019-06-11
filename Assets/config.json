@@ -1,0 +1,28 @@
+{
+  "reelList": [
+    ["3xBAR", "BAR", "2xBAR", "7", "CHERRY"],
+    ["3xBAR", "BAR", "2xBAR", "7", "CHERRY"],
+    ["3xBAR", "BAR", "2xBAR", "7", "CHERRY"]
+  ],
+  "payTableList": [
+    {"lineId":  "top", "symbolIdList": ["CHERRY", "CHERRY", "CHERRY"], "payout":  2000},
+    {"lineId":  "center", "symbolIdList": ["CHERRY", "CHERRY", "CHERRY"], "payout":  1000},
+    {"lineId":  "bottom", "symbolIdList": ["CHERRY", "CHERRY", "CHERRY"], "payout":  4000},
+    {"symbolIdList": ["7", "7", "7"], "payout":  150},
+    {"symbolIdList": ["CHERRY", "7"], "payout":  75},
+    {"symbolIdList": ["3xBAR", "3xBAR", "3xBAR"], "payout":  50},
+    {"symbolIdList": ["2xBAR", "2xBAR", "2xBAR"], "payout":  20},
+    {"symbolIdList": ["BAR", "BAR", "BAR"], "payout":  10},
+    {"symbolIdList": ["3xBAR", "2xBAR"], "payout":  5},
+    {"symbolIdList": ["3xBAR", "BAR"], "payout":  5},
+    {"symbolIdList": ["2xBAR", "BAR"], "payout":  5}
+  ],
+  "balance": 5000,
+  "spinCost": 1,
+  "isTampering": false,
+  "tamperReelValues": [
+    {"symbolId": "CHERRY", "lineId": "top"},
+    {"symbolId": "CHERRY", "lineId": "center"},
+    {"symbolId": "CHERRY", "lineId": "bottom"}
+  ]
+}
