@@ -1,8 +1,8 @@
 {
   "reelList": [
     ["3xBAR", "BAR", "2xBAR", "7", "CHERRY"],
-    ["3xBAR", "BAR", "2xBAR", "7", "CHERRY"],
-    ["3xBAR", "BAR", "2xBAR", "7", "CHERRY"]
+    ["7", "CHERRY", "3xBAR", "BAR", "2xBAR"],
+    ["CHERRY", "3xBAR", "BAR", "2xBAR", "7"]
   ],
   "payTableList": [
     {"lineId":  "top", "symbolIdList": ["CHERRY", "CHERRY", "CHERRY"], "payout":  2000},

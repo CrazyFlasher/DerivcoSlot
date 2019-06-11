@@ -67,7 +67,10 @@ class ReelUI extends UIClip {
         var firstSymbolY:Float = symbol.y + symbol.height / 2;
         placeHolder.y = -firstSymbolY;
 
-        animate(spinTime);
+        if (spinTime > 0)
+        {
+            animate(spinTime);
+        }
     }
 
     private function animate(spinTime:Float):Void
