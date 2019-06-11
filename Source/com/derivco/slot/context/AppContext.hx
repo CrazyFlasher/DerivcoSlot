@@ -1,6 +1,6 @@
 package com.derivco.slot.context;
 import com.derivco.slot.controller.AppController;
-import com.derivco.slot.controller.AppControllerEventType;
+import com.derivco.slot.controller.AppControllerEvent;
 import com.derivco.slot.controller.IAppController;
 import com.derivco.slot.models.app.AppModel;
 import com.derivco.slot.models.app.IAppModel;
@@ -11,6 +11,8 @@ import com.derivco.slot.models.payTable.PayTableModel;
 import com.derivco.slot.models.reels.IReelsModel;
 import com.derivco.slot.models.reels.IReelsModelImmutable;
 import com.derivco.slot.models.reels.ReelsModel;
+import com.derivco.slot.view.AppView;
+import com.derivco.slot.view.AppViewEvent;
 import openfl.display.DisplayObjectContainer;
 import openfl.events.Event;
 class AppContext implements IAppContext {
@@ -30,6 +32,8 @@ class AppContext implements IAppContext {
 
     private var controller:IAppController;
 
+    private var view:AppView;
+
     public function new(viewRoot:DisplayObjectContainer) {
         this.viewRoot = viewRoot;
 
@@ -43,14 +47,15 @@ class AppContext implements IAppContext {
         _payTableModel = new PayTableModel();
 
         controller = new AppController(this);
-        controller.addEventListener(AppControllerEventType.RESOURCES_LOADED, createViews);
+        controller.addEventListener(Std.string(AppControllerEvent.RESOURCES_LOADED), createViews);
 
         controller.loadResources();
     }
 
     private function createViews(event:Event):Void
     {
-        trace("createViews");
+        view = new AppView(this, viewRoot);
+        view.addEventListener(Std.string(AppViewEvent.SPIN), function(e:Event):Void {controller.spin();});
     }
 
     function get_appModel():IAppModel {

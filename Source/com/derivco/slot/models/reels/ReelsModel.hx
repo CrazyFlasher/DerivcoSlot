@@ -27,6 +27,10 @@ class ReelsModel extends BaseModel implements IReelsModel {
             _reelList.push(reelModel);
             _reelListImmutable.push(reelModel);
         }
+
+//        spin();
+
+        dispatchEvent(new Event(Std.string(ReelsModelEvent.POPULATED)));
     }
 
     public function spin():IReelsModel {
@@ -36,6 +40,10 @@ class ReelsModel extends BaseModel implements IReelsModel {
         }
 
         dispatchEvent(new Event(Std.string(ReelsModelEvent.SPIN)));
+
+        trace(_reelList[0].symbolList);
+        trace(_reelList[1].symbolList);
+        trace(_reelList[2].symbolList);
 
         return this;
     }
