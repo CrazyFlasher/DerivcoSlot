@@ -39,20 +39,14 @@ class AppController extends EventDispatcher implements IAppController {
     private function loadAssets():Void
     {
         var future = Assets.loadLibrary("ui").onComplete(function(_):Void {
-            dispatchEvent(new Event(Std.string(AppControllerEvent.RESOURCES_LOADED)));
+            dispatchEvent(new Event(AppControllerEventType.RESOURCES_LOADED));
         });
     }
 
     public function spin():IAppController {
 
         reelsModel.spin();
-
-        return this;
-    }
-
-    public function calculateWin():IAppController {
-
-        payTableModel.calculateWin(reelsModel);
+        payTableModel.calculatePayout(reelsModel.reelListImmutable);
 
         return this;
     }

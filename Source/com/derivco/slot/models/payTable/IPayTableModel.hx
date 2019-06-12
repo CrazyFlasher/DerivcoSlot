@@ -1,6 +1,7 @@
 package com.derivco.slot.models.payTable;
-import com.derivco.slot.models.reels.IReelsModelImmutable;
 import com.derivco.slot.models.common.IBaseModel;
+import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 interface IPayTableModel extends IPayTableModelImmutable extends IBaseModel{
-    function calculateWin(reelsModel:IReelsModelImmutable):IPayTableModel;
+    function reset():IPayTableModel;
+    function calculatePayout(reelList:Array<ISingleReelModelImmutable>):IPayTableModel;
 }

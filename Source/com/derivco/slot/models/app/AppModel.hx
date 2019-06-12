@@ -25,19 +25,19 @@ class AppModel extends BaseModel implements IAppModel{
     public function setIsTampering(value:Bool):IAppModel {
         _isTampering = value;
 
-        dispatchEvent(new Event(Std.string(AppModelEvent.IS_TAMPERING_UPDATED)));
+        dispatchEvent(new Event(AppModelEventType.IS_TAMPERING_UPDATED));
 
         return this;
     }
 
     public function setBalance(value:Int):IAppModel {
-        dispatchEvent(new Event(Std.string(AppModelEvent.BALANCE_UPDATED)));
+        dispatchEvent(new Event(AppModelEventType.BALANCE_UPDATED));
 
         return this;
     }
 
     public function setSpinCost(value:Int):IAppModel {
-        dispatchEvent(new Event(Std.string(AppModelEvent.SPIN_COST_UPDATED)));
+        dispatchEvent(new Event(AppModelEventType.SPIN_COST_UPDATED));
 
         return this;
     }

@@ -1,11 +1,14 @@
 package com.derivco.slot.view;
 
+import com.derivco.slot.view.ui.ReelUIEventType;
+import com.derivco.slot.models.payTable.PayTableModelEventType;
+import com.derivco.slot.models.payTable.IPayTableModelImmutable;
 import openfl.events.MouseEvent;
 import com.derivco.slot.context.IAppContextImmutable;
 import com.derivco.slot.models.app.IAppModelImmutable;
 import com.derivco.slot.models.reels.IReelsModelImmutable;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
-import com.derivco.slot.models.reels.ReelsModelEvent;
+import com.derivco.slot.models.reels.ReelsModelEventType;
 import com.derivco.slot.view.ui.ButtonUI;
 import com.derivco.slot.view.ui.ReelUI;
 import openfl.display.DisplayObjectContainer;
@@ -18,6 +21,8 @@ import Std;
 
 class AppView extends EventDispatcher {
 
+    private var assets:DisplayObjectContainer;
+
     private var context:IAppContextImmutable;
     private var root:DisplayObjectContainer;
 
@@ -25,10 +30,12 @@ class AppView extends EventDispatcher {
 
     private var appModel:IAppModelImmutable;
     private var reelsModel:IReelsModelImmutable;
+    private var payTableModel:IPayTableModelImmutable;
 
     private var spinBtn:ButtonUI;
     private var balanceValueTf:TextField;
     private var spinCostValueTf:TextField;
+    private var payoutValueTf:TextField;
 
     private var reelUIList:Array<ReelUI> = new Array<ReelUI>();
 
@@ -45,31 +52,35 @@ class AppView extends EventDispatcher {
     {
         appModel = context.appModelImmutable;
         reelsModel = context.reelsModelImmutable;
+        payTableModel = context.payTableModelImmutable;
 
-        reelsModel.addEventListener(Std.string(ReelsModelEvent.POPULATED), updateReels);
-        reelsModel.addEventListener(Std.string(ReelsModelEvent.SPIN), showResult);
+        reelsModel.addEventListener(ReelsModelEventType.POPULATED, updateReels);
+        reelsModel.addEventListener(ReelsModelEventType.SPIN, showResult);
+        payTableModel.addEventListener(PayTableModelEventType.RESETED, updateValues);
 
         container = new Sprite();
         root.addChild(container);
 
-        var assets:DisplayObjectContainer = Assets.getMovieClip("ui:assets");
+        assets = Assets.getMovieClip("ui:assets");
         container.addChild(assets);
 
-        spinBtn = new ButtonUI(cast (assets.getChildByName("spinBtn"), Sprite));
+        spinBtn = new ButtonUI(getSprite("spinBtn"));
         spinBtn.assets.addEventListener(MouseEvent.CLICK, spinBtnClick);
 
-        balanceValueTf = cast (assets.getChildByName("balanceValueTf"), TextField);
-        spinCostValueTf = cast (assets.getChildByName("spinCostValueTf"), TextField);
+        balanceValueTf = getTextField("balanceValueTf");
+        spinCostValueTf = getTextField("spinCostValueTf");
+        payoutValueTf = getTextField("payoutValueTf");
 
         spinCostValueTf.restrict = balanceValueTf.restrict = "0-9";
 
         createReels(assets);
+
         updateValues();
     }
 
     private function spinBtnClick(event:MouseEvent):Void
     {
-        dispatchEvent(new Event(Std.string(AppViewEvent.SPIN)));
+        dispatchEvent(new Event(AppViewEventType.SPIN));
     }
 
     private function showResult(event:Event):Void
@@ -105,12 +116,35 @@ class AppView extends EventDispatcher {
             reelUI = new ReelUI(cast (assets.getChildByName("reel_" + index), Sprite));
             reelUI.update(singleReelModel);
             reelUIList.push(reelUI);
+
+            if (index == modelList.length - 1)
+            {
+                reelUI.addEventListener(ReelUIEventType.REEL_STOPPED, lastReelStopped);
+            }
         }
     }
 
-    private function updateValues():Void
+    private function lastReelStopped(event:Event):Void
+    {
+        updateValues();
+
+        dispatchEvent(new Event(AppViewEventType.REELS_STOPPED));
+    }
+
+    private function updateValues(event:Event = null):Void
     {
         balanceValueTf.text = Std.string(appModel.balance);
         spinCostValueTf.text = Std.string(appModel.spinCost);
+        payoutValueTf.text = Std.string(payTableModel.payout);
+    }
+
+    private function getSprite(name:String):Sprite
+    {
+        return cast (assets.getChildByName(name), Sprite);
+    }
+
+    private function getTextField(name:String):TextField
+    {
+        return cast (assets.getChildByName(name), TextField);
     }
 }

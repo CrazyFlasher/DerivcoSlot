@@ -1,11 +1,13 @@
 package com.derivco.slot.models.payTable;
-import com.derivco.slot.models.reels.ISingleReelModelImmutable;
-import com.derivco.slot.models.reels.IReelsModelImmutable;
+import openfl.events.Event;
 import com.derivco.slot.models.common.BaseModel;
+import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 class PayTableModel extends BaseModel implements IPayTableModel{
+    public var payout(get, never):Int;
+
     private var _payTableList:Array<IPayTableItemModel> = new Array<IPayTableItemModel>();
 
-    private var _lastWin:Int;
+    private var _payout:Int;
 
     public function new() {
         super();
@@ -27,19 +29,23 @@ class PayTableModel extends BaseModel implements IPayTableModel{
         }
     }
 
-    public function calculateWin(reelsModel:IReelsModelImmutable):IPayTableModel {
-        var reelList:Array<ISingleReelModelImmutable> = reelsModel.reelListImmutable;
+    public function reset():IPayTableModel {
+        _payout = 0;
 
-        _lastWin = 0;
+        dispatchEvent(new Event(PayTableModelEventType.RESETED));
+
+        return this;
+    }
+
+    public function calculatePayout(reelList:Array<ISingleReelModelImmutable>):IPayTableModel {
+        _payout = 0;
 
         for (model in _payTableList)
         {
-            _lastWin += model.getWin(getLineSymbolList(1, reelList), "top");
-            _lastWin += model.getWin(getLineSymbolList(2, reelList), "center");
-            _lastWin += model.getWin(getLineSymbolList(3, reelList), "bottom");
+            _payout += model.calculatePayout(getLineSymbolList(1, reelList), "top");
+            _payout += model.calculatePayout(getLineSymbolList(2, reelList), "center");
+            _payout += model.calculatePayout(getLineSymbolList(3, reelList), "bottom");
         }
-
-        trace(_lastWin);
 
         return this;
     }
@@ -49,4 +55,7 @@ class PayTableModel extends BaseModel implements IPayTableModel{
         return [reelList[0].symbolList[lineIndex], reelList[1].symbolList[lineIndex], reelList[2].symbolList[lineIndex]];
     }
 
+    private function get_payout():Int {
+        return _payout;
+    }
 }
