@@ -5,10 +5,13 @@ class AppModel extends BaseModel implements IAppModel{
     public var balance(get, never):Int;
     public var spinCost(get, never):Int;
     public var isTampering(get, never):Bool;
+    public var isLocked(get, never):Bool;
+    public var hasEnoughMoney(get, never):Bool;
 
     private var _balance:Int;
     private var _spinCost:Int;
     private var _isTampering:Bool;
+    private var _locked:Bool;
 
     public function new() {
         super();
@@ -31,13 +34,25 @@ class AppModel extends BaseModel implements IAppModel{
     }
 
     public function setBalance(value:Int):IAppModel {
+        _balance = value;
+
         dispatchEvent(new Event(AppModelEventType.BALANCE_UPDATED));
 
         return this;
     }
 
     public function setSpinCost(value:Int):IAppModel {
+        _spinCost = value;
+
         dispatchEvent(new Event(AppModelEventType.SPIN_COST_UPDATED));
+
+        return this;
+    }
+
+    public function setLocked(value:Bool):IAppModel {
+        _locked = value;
+
+        dispatchEvent(new Event(AppModelEventType.LOCKED_UPDATED));
 
         return this;
     }
@@ -52,6 +67,14 @@ class AppModel extends BaseModel implements IAppModel{
 
     private function get_isTampering():Bool {
         return _isTampering;
+    }
+
+    private function get_isLocked():Bool {
+        return _locked;
+    }
+
+    private function get_hasEnoughMoney():Bool {
+        return _balance >= _spinCost;
     }
 
 }

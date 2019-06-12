@@ -1,20 +1,21 @@
 package com.derivco.slot.view;
 
-import com.derivco.slot.view.ui.ReelUIEventType;
-import com.derivco.slot.models.payTable.PayTableModelEventType;
-import com.derivco.slot.models.payTable.IPayTableModelImmutable;
-import openfl.events.MouseEvent;
 import com.derivco.slot.context.IAppContextImmutable;
+import com.derivco.slot.models.app.AppModelEventType;
 import com.derivco.slot.models.app.IAppModelImmutable;
+import com.derivco.slot.models.payTable.IPayTableModelImmutable;
+import com.derivco.slot.models.payTable.PayTableModelEventType;
 import com.derivco.slot.models.reels.IReelsModelImmutable;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 import com.derivco.slot.models.reels.ReelsModelEventType;
 import com.derivco.slot.view.ui.ButtonUI;
 import com.derivco.slot.view.ui.ReelUI;
+import com.derivco.slot.view.ui.ReelUIEventType;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
+import openfl.events.MouseEvent;
 import openfl.text.TextField;
 import openfl.utils.Assets;
 import Std;
@@ -57,6 +58,7 @@ class AppView extends EventDispatcher {
         reelsModel.addEventListener(ReelsModelEventType.POPULATED, updateReels);
         reelsModel.addEventListener(ReelsModelEventType.SPIN, showResult);
         payTableModel.addEventListener(PayTableModelEventType.RESETED, updateValues);
+        appModel.addEventListener(AppModelEventType.LOCKED_UPDATED, appLockedUpdated);
 
         container = new Sprite();
         root.addChild(container);
@@ -76,6 +78,16 @@ class AppView extends EventDispatcher {
         createReels(assets);
 
         updateValues();
+    }
+
+    private function appLockedUpdated(event:Event):Void
+    {
+        container.mouseEnabled = container.mouseChildren = !appModel.isLocked;
+
+        if (!appModel.isLocked)
+        {
+            updateValues();
+        }
     }
 
     private function spinBtnClick(event:MouseEvent):Void

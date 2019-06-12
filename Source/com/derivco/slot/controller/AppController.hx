@@ -45,11 +45,22 @@ class AppController extends EventDispatcher implements IAppController {
 
     public function spin():IAppController {
 
-        reelsModel.spin();
-        payTableModel.calculatePayout(reelsModel.reelListImmutable);
+        if (appModel.hasEnoughMoney)
+        {
+            appModel.setBalance(appModel.balance - appModel.spinCost);
+            appModel.setLocked(true);
+
+            reelsModel.spin();
+            payTableModel.calculatePayout(reelsModel.reelListImmutable);
+            appModel.setBalance(appModel.balance + payTableModel.payout);
+        }
 
         return this;
     }
 
+    public function resultsShown():IAppController {
+        appModel.setLocked(false);
 
+        return this;
+    }
 }

@@ -1,14 +1,14 @@
 package com.derivco.slot.view.ui;
 
-import openfl.Lib;
-import motion.Actuate;
-import openfl.events.Event;
-import openfl.utils.Dictionary;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
+import motion.Actuate;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.Lib;
+import openfl.utils.Dictionary;
 
 class ReelUI extends UIClip {
     private var model:ISingleReelModelImmutable;
@@ -88,7 +88,12 @@ class ReelUI extends UIClip {
                 firstSymbolY -= symbol.height * model.symbolList.length;
             }
 
-            Actuate.tween(placeHolder, 0.5, {y: -firstSymbolY});
+            Actuate.tween(placeHolder, 0.5, {y: -firstSymbolY}).onComplete(
+                function():Void
+                {
+                    dispatchEvent(new Event(ReelUIEventType.REEL_STOPPED));
+                }
+            );
         }, Std.int(spinTime * 1000));
     }
 
