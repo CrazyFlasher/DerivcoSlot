@@ -1,5 +1,6 @@
 package com.derivco.slot.view;
 
+import com.derivco.slot.view.ui.PayTableUIEventType;
 import com.derivco.slot.context.IAppContextImmutable;
 import com.derivco.slot.models.app.AppModelEventType;
 import com.derivco.slot.models.app.IAppModelImmutable;
@@ -41,6 +42,8 @@ class AppView extends EventDispatcher {
 
     private var reelUIList:Array<ReelUI> = new Array<ReelUI>();
     private var payTableUI:PayTableUI;
+
+    private var highLightItemIndex:Int;
 
     public function new(context:IAppContextImmutable, root:DisplayObjectContainer) {
         super();
@@ -120,6 +123,7 @@ class AppView extends EventDispatcher {
     private function createPaytable():Void
     {
         payTableUI = new PayTableUI(getSprite("paytableHolder"), payTableModel);
+        payTableUI.addEventListener(PayTableUIEventType.HIGHLIGHT_COMPLETE, payTableUIHighLightComplete);
     }
 
     private function createReels():Void
@@ -156,7 +160,40 @@ class AppView extends EventDispatcher {
             balanceValueTf.text = Std.string(appModel.balance);
             spinCostValueTf.text = Std.string(appModel.spinCost);
             payoutValueTf.text = Std.string(payTableModel.payout);
+
+            if (payTableModel.payout > 0)
+            {
+                startHighLight();
+            }
+        } else
+        {
+            payTableUI.reset();
         }
+    }
+
+    private function startHighLight():Void
+    {
+        highLightItemIndex = 0;
+
+        highLightNext();
+    }
+
+    private function highLightNext():Void
+    {
+        payTableUI.highLightItem(payTableModel.itemListWithPayout[highLightItemIndex]);
+    }
+
+    private function payTableUIHighLightComplete(event:Event):Void
+    {
+        if (highLightItemIndex < payTableModel.itemListWithPayout.length - 1)
+        {
+            highLightItemIndex++;
+        } else
+        {
+            highLightItemIndex = 0;
+        }
+
+        highLightNext();
     }
 
     private function getSprite(name:String):Sprite

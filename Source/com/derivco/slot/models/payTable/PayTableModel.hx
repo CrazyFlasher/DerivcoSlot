@@ -5,9 +5,11 @@ import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 class PayTableModel extends BaseModel implements IPayTableModel{
     public var payout(get, never):Int;
     public var payTableListImmutable(get, never):Array<IPayTableItemModelImmutable>;
+    public var itemListWithPayout(get, never):Array<IPayTableItemModelImmutable>;
 
     private var _payTableList:Array<IPayTableItemModel> = new Array<IPayTableItemModel>();
     private var _payTableListImmutable:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
+    private var _itemListWithPayout:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
 
     private var _payout:Int;
 
@@ -35,6 +37,12 @@ class PayTableModel extends BaseModel implements IPayTableModel{
 
     public function reset():IPayTableModel {
         _payout = 0;
+        untyped _itemListWithPayout.length = 0;
+
+        for (model in _payTableList)
+        {
+            model.reset();
+        }
 
         dispatchEvent(new Event(PayTableModelEventType.RESETED));
 
@@ -43,12 +51,23 @@ class PayTableModel extends BaseModel implements IPayTableModel{
 
     public function calculatePayout(reelList:Array<ISingleReelModelImmutable>):IPayTableModel {
         _payout = 0;
+        untyped _itemListWithPayout.length = 0;
 
+        var itemPayout:Int;
         for (model in _payTableList)
         {
-            _payout += model.calculatePayout(getLineSymbolList(1, reelList), "top");
-            _payout += model.calculatePayout(getLineSymbolList(2, reelList), "center");
-            _payout += model.calculatePayout(getLineSymbolList(3, reelList), "bottom");
+            itemPayout = 0;
+
+            itemPayout += model.calculatePayout(getLineSymbolList(1, reelList), "top");
+            itemPayout += model.calculatePayout(getLineSymbolList(2, reelList), "center");
+            itemPayout += model.calculatePayout(getLineSymbolList(3, reelList), "bottom");
+
+            if (itemPayout > 0)
+            {
+                _itemListWithPayout.push(model);
+            }
+
+            _payout += itemPayout;
         }
 
         return this;
@@ -65,5 +84,9 @@ class PayTableModel extends BaseModel implements IPayTableModel{
 
     private function get_payTableListImmutable():Array<IPayTableItemModelImmutable> {
         return _payTableListImmutable;
+    }
+
+    private function get_itemListWithPayout():Array<IPayTableItemModelImmutable> {
+        return _itemListWithPayout;
     }
 }

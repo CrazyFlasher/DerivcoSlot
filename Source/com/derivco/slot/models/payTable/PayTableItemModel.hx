@@ -1,6 +1,7 @@
 package com.derivco.slot.models.payTable;
 import com.derivco.slot.models.common.BaseModel;
-class PayTableItemModel extends BaseModel implements IPayTableItemModel{
+class PayTableItemModel extends BaseModel implements IPayTableItemModel {
+    public var lastPayout(get, never):Int;
 
     public var lineId(get, never):String;
     public var symbolIdList(get, never):Array<Dynamic>;
@@ -9,6 +10,8 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel{
     private var _lineId:String;
     private var _symbolIdList:Array<Dynamic>;
     private var _payout:Int;
+
+    private var _lastPayout:Int;
 
     public function new() {
         super();
@@ -20,6 +23,12 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel{
         _lineId = json.lineId;
         _symbolIdList = cast (json.symbolIdList, Array<Dynamic>);
         _payout = json.payout;
+    }
+
+    public function reset():IPayTableItemModel {
+        _lastPayout = 0;
+
+        return this;
     }
 
     public function calculatePayout(lineSymbolList:Array<String>, lineId:String):Int {
@@ -40,7 +49,9 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel{
 
             trace("payout: " + lineSymbolList + ": " + lineId + ": value " + _payout);
 
-            return _payout;
+            _lastPayout = _payout;
+
+            return _lastPayout;
         }
 
         return 0;
@@ -56,5 +67,9 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel{
 
     private function get_payout():Int {
         return _payout;
+    }
+
+    private function get_lastPayout():Int {
+        return _lastPayout;
     }
 }

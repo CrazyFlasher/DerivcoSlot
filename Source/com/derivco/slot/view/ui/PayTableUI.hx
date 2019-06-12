@@ -1,4 +1,9 @@
 package com.derivco.slot.view.ui;
+import openfl.events.Event;
+import openfl.events.TimerEvent;
+import openfl.utils.Timer;
+import openfl.Lib;
+import openfl.display.Graphics;
 import com.derivco.slot.models.payTable.IPayTableItemModelImmutable;
 import com.derivco.slot.models.payTable.IPayTableModelImmutable;
 import flash.text.TextFieldAutoSize;
@@ -11,6 +16,10 @@ class PayTableUI extends UIClip {
 
     private var model:IPayTableModelImmutable;
 
+    private var itemUIList:Array<PayTableItemUI>;
+
+    private var highLightTimer:Timer;
+
     public function new(assets:Sprite, model:IPayTableModelImmutable) {
         this.model = model;
 
@@ -20,6 +29,11 @@ class PayTableUI extends UIClip {
     override private function init():Void {
         super.init();
 
+        highLightTimer = new Timer(1000, 1);
+        highLightTimer.addEventListener(TimerEvent.TIMER_COMPLETE, highLightTimerComplete);
+
+        itemUIList = new Array<PayTableItemUI>();
+
         var itemUI:PayTableItemUI;
         var nextY:Float = 0;
         for (itemModel in model.payTableListImmutable)
@@ -28,18 +42,59 @@ class PayTableUI extends UIClip {
             itemUI.assets.y = nextY;
 
             _assets.addChild(itemUI.assets);
+            itemUIList.push(itemUI);
 
             nextY += itemUI.assets.height;
+        }
+    }
+
+    private function highLightTimerComplete(event:TimerEvent):Void
+    {
+        dispatchEvent(new Event(PayTableUIEventType.HIGHLIGHT_COMPLETE));
+    }
+
+    public function reset():Void
+    {
+        highLightTimer.reset();
+
+        for (itemUI in itemUIList)
+        {
+            itemUI.showHighLight(false);
+        }
+    }
+
+    public function highLightItem(model:IPayTableItemModelImmutable):Void
+    {
+        reset();
+
+        for (itemUI in itemUIList)
+        {
+            if (itemUI.model == model)
+            {
+                itemUI.showHighLight(true);
+
+                highLightTimer.start();
+
+                break;
+            }
         }
     }
 }
 
 class PayTableItemUI extends UIClip
 {
-    private var model:IPayTableItemModelImmutable;
+    public var model(get, never):IPayTableItemModelImmutable;
+
+    private var _model:IPayTableItemModelImmutable;
+
+    private var highLightRect:Sprite;
+
+    private var _showHighLight:Bool;
+
+    private var timer:Timer;
 
     public function new(assets:Sprite, model:IPayTableItemModelImmutable) {
-        this.model = model;
+        _model = model;
 
         super(assets);
     }
@@ -47,13 +102,16 @@ class PayTableItemUI extends UIClip
     override private function init():Void {
         super.init();
 
+        timer = new Timer(250);
+        timer.addEventListener(TimerEvent.TIMER, onTimer);
+
         var tf:TextField;
         var bitmap:Bitmap;
         var nextX:Float = 0;
         var symbolId:String;
-        for (i in 0...model.symbolIdList.length)
+        for (i in 0..._model.symbolIdList.length)
         {
-            symbolId = model.symbolIdList[i];
+            symbolId = _model.symbolIdList[i];
             bitmap = new Bitmap(Assets.getBitmapData("assets/reels/" + symbolId + ".png"));
             bitmap.smoothing = true;
             bitmap.height = bitmap.width = 28;
@@ -63,7 +121,7 @@ class PayTableItemUI extends UIClip
             bitmap.x = nextX;
             nextX += bitmap.width;
 
-            if (i < model.symbolIdList.length - 1)
+            if (i < _model.symbolIdList.length - 1)
             {
                 tf = getNewTf("+");
                 _assets.addChild(tf);
@@ -73,10 +131,25 @@ class PayTableItemUI extends UIClip
             }
         }
 
-        tf = getNewTf("on " + (model.lineId == null ? "any" : model.lineId) + " line = " + model.payout);
+        tf = getNewTf("on " + (_model.lineId == null ? "any" : _model.lineId) + " line = " + _model.payout);
         _assets.addChild(tf);
 
         tf.x = nextX;
+
+        createHighLight();
+    }
+
+    private function createHighLight():Void
+    {
+        highLightRect = new Sprite();
+
+        var graphics:Graphics = highLightRect.graphics;
+        graphics.lineStyle(2, 0xffcc00);
+        graphics.drawRect(0, 0, _assets.width, _assets.height);
+        graphics.endFill();
+
+        _assets.addChild(highLightRect);
+        highLightRect.visible = false;
     }
 
     private function getNewTf(text:String):TextField {
@@ -87,5 +160,29 @@ class PayTableItemUI extends UIClip
         tf.text = text;
 
         return tf;
+    }
+
+    public function showHighLight(value:Bool):Void
+    {
+        _showHighLight = value;
+
+        value ? timer.start() : timer.reset();
+
+        hideOrShowHighLight();
+    }
+
+    private function onTimer(event:TimerEvent):Void
+    {
+        hideOrShowHighLight();
+    }
+
+    private function hideOrShowHighLight():Void
+    {
+        highLightRect.visible = !highLightRect.visible && _showHighLight;
+    }
+
+    private function get_model():IPayTableItemModelImmutable
+    {
+        return _model;
     }
 }
