@@ -1,5 +1,6 @@
 package com.derivco.slot.view.ui;
 
+import openfl.display.Graphics;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 import motion.Actuate;
 import openfl.Assets;
@@ -13,12 +14,15 @@ import openfl.utils.Dictionary;
 class ReelUI extends UIClip {
     private var model:ISingleReelModelImmutable;
 
-    private var symbolMap:Dictionary<String, DisplayObject>;
+    private var symbolMap:Dictionary<String, Sprite>;
+    private var symbolList:Array<Sprite>;
 
     private var placeHolder:Sprite;
     private var symbolY:Float;
 
-    public function new(assets:Sprite) {
+    public function new(assets:Sprite, model:ISingleReelModelImmutable) {
+        this.model = model;
+
         super(assets);
     }
 
@@ -26,14 +30,10 @@ class ReelUI extends UIClip {
     {
         super.init();
 
+        symbolMap = new Dictionary();
+        symbolList = new Array<Sprite>();
+
         placeHolder = cast(_assets.getChildByName("placeHolder"), Sprite);
-    }
-
-    public function update(model:ISingleReelModelImmutable):Void
-    {
-        clear();
-
-        this.model = model;
 
         symbolY = 0;
         for (i in 0...3)
@@ -44,21 +44,67 @@ class ReelUI extends UIClip {
         showResult(0);
     }
 
+    public function reset():Void
+    {
+        for (symbolId in symbolMap)
+        {
+            var symbol:Sprite = symbolMap.get(symbolId);
+            symbol.getChildByName("rect").visible = false;
+        }
+    }
+
+    public function highLightSymbol(symbolId:String, position:Int):Bool
+    {
+        reset();
+
+        if (symbolList[position + 1] == symbolId)
+        {
+            symbolList[position + 1].getChildByName("rect").visible = true;
+
+            return true;
+        }
+
+        return false;
+    }
+
     private function createSymbols(storeToMap:Bool):Void
     {
-        var symbol:Bitmap;
+        var symbol:Sprite;
         for (symbolId in model.symbolList)
         {
-            symbol = new Bitmap(Assets.getBitmapData("assets/reels/" + symbolId + ".png"));
+            symbol = getSymbol("assets/reels/" + symbolId + ".png");
+
             placeHolder.addChild(symbol);
             if (storeToMap)
             {
                 symbolMap.set(symbolId, symbol);
+                symbolList.push(symbol);
             }
 
             symbol.y = symbolY;
             symbolY += symbol.height;
         }
+    }
+
+    private function getSymbol(assetId:String):Sprite
+    {
+        var sym:Sprite = new Sprite();
+        var bitmap:Bitmap = new Bitmap(Assets.getBitmapData(assetId));
+
+        sym.addChild(bitmap);
+
+        var rect:Sprite = new Sprite();
+        rect.visible = false;
+        rect.name = "rect";
+
+        var g:Graphics = rect.graphics;
+        g.lineStyle(10, 0xff0000);
+        g.drawRect(0, 0, sym.width, sym.height);
+        g.endFill();
+
+        sym.addChild(rect);
+
+        return sym;
     }
 
     public function showResult(spinTime:Float):Void
@@ -91,6 +137,8 @@ class ReelUI extends UIClip {
             Actuate.tween(placeHolder, 0.5, {y: -firstSymbolY}).onComplete(
                 function():Void
                 {
+                    showResult(0);
+
                     dispatchEvent(new Event(ReelUIEventType.REEL_STOPPED));
                 }
             );
@@ -103,16 +151,6 @@ class ReelUI extends UIClip {
         if (placeHolder.y > 0)
         {
             placeHolder.y = -10 * 121;
-        }
-    }
-
-    private function clear():Void
-    {
-        symbolMap = new Dictionary();
-
-        for (symbol in symbolMap)
-        {
-            placeHolder.removeChild(symbolMap.get(symbol));
         }
     }
 }

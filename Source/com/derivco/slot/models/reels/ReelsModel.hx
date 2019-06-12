@@ -27,8 +27,6 @@ class ReelsModel extends BaseModel implements IReelsModel {
             _reelList.push(reelModel);
             _reelListImmutable.push(reelModel);
         }
-
-        dispatchEvent(new Event(ReelsModelEventType.POPULATED));
     }
 
     public function spin():IReelsModel {

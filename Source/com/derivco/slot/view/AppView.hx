@@ -1,9 +1,9 @@
 package com.derivco.slot.view;
 
-import com.derivco.slot.view.ui.PayTableUIEventType;
 import com.derivco.slot.context.IAppContextImmutable;
 import com.derivco.slot.models.app.AppModelEventType;
 import com.derivco.slot.models.app.IAppModelImmutable;
+import com.derivco.slot.models.payTable.IPayTableItemModelImmutable;
 import com.derivco.slot.models.payTable.IPayTableModelImmutable;
 import com.derivco.slot.models.payTable.PayTableModelEventType;
 import com.derivco.slot.models.reels.IReelsModelImmutable;
@@ -11,6 +11,7 @@ import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 import com.derivco.slot.models.reels.ReelsModelEventType;
 import com.derivco.slot.view.ui.ButtonUI;
 import com.derivco.slot.view.ui.PayTableUI;
+import com.derivco.slot.view.ui.PayTableUIEventType;
 import com.derivco.slot.view.ui.ReelUI;
 import com.derivco.slot.view.ui.ReelUIEventType;
 import openfl.display.DisplayObjectContainer;
@@ -21,6 +22,8 @@ import openfl.events.MouseEvent;
 import openfl.text.TextField;
 import openfl.utils.Assets;
 import Std;
+
+using Lambda;
 
 class AppView extends EventDispatcher {
 
@@ -60,7 +63,6 @@ class AppView extends EventDispatcher {
         reelsModel = context.reelsModelImmutable;
         payTableModel = context.payTableModelImmutable;
 
-        reelsModel.addEventListener(ReelsModelEventType.POPULATED, updateReels);
         reelsModel.addEventListener(ReelsModelEventType.SPIN, showResult);
         payTableModel.addEventListener(PayTableModelEventType.RESETED, updateValues);
         appModel.addEventListener(AppModelEventType.LOCKED_UPDATED, appLockedUpdated);
@@ -110,16 +112,6 @@ class AppView extends EventDispatcher {
         }
     }
 
-    private function updateReels(event:Event):Void
-    {
-        var index:Int;
-        for (reelUI in reelUIList)
-        {
-            index = reelUIList.indexOf(reelUI);
-            reelUI.update(reelsModel.reelListImmutable[index]);
-        }
-    }
-
     private function createPaytable():Void
     {
         payTableUI = new PayTableUI(getSprite("paytableHolder"), payTableModel);
@@ -135,8 +127,7 @@ class AppView extends EventDispatcher {
         for (singleReelModel in modelList)
         {
             index = modelList.indexOf(singleReelModel);
-            reelUI = new ReelUI(getSprite("reel_" + index));
-            reelUI.update(singleReelModel);
+            reelUI = new ReelUI(getSprite("reel_" + index), singleReelModel);
             reelUIList.push(reelUI);
 
             if (index == modelList.length - 1)
@@ -168,6 +159,11 @@ class AppView extends EventDispatcher {
         } else
         {
             payTableUI.reset();
+
+            for (reelUI in reelUIList)
+            {
+                reelUI.reset();
+            }
         }
     }
 
@@ -180,7 +176,42 @@ class AppView extends EventDispatcher {
 
     private function highLightNext():Void
     {
-        payTableUI.highLightItem(payTableModel.itemListWithPayout[highLightItemIndex]);
+        var model:IPayTableItemModelImmutable = payTableModel.itemListWithPayout[highLightItemIndex];
+        payTableUI.highLightItem(model);
+
+        var success:Bool = reelUIList[0].highLightSymbol(model.symbolIdList[0], 0);
+
+        if (!success)
+        {
+            success = reelUIList[1].highLightSymbol(model.symbolIdList[0], 1);
+            if (!success)
+            {
+                success = reelUIList[2].highLightSymbol(model.symbolIdList[0], 2);
+            }
+        }
+
+        success = reelUIList[0].highLightSymbol(model.symbolIdList[1], 0);
+        if (!success)
+        {
+            success = reelUIList[1].highLightSymbol(model.symbolIdList[1], 1);
+            if (!success)
+            {
+                success = reelUIList[2].highLightSymbol(model.symbolIdList[1], 2);
+            }
+        }
+
+        if (model.symbolIdList.length > 2)
+        {
+            success = reelUIList[0].highLightSymbol(model.symbolIdList[2], 0);
+            if (!success)
+            {
+                success = reelUIList[1].highLightSymbol(model.symbolIdList[2], 1);
+                if (!success)
+                {
+                    success = reelUIList[2].highLightSymbol(model.symbolIdList[2], 2);
+                }
+            }
+        }
     }
 
     private function payTableUIHighLightComplete(event:Event):Void

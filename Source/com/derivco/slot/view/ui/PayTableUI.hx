@@ -91,7 +91,7 @@ class PayTableItemUI extends UIClip
 
     private var _showHighLight:Bool;
 
-    private var timer:Timer;
+    private var blinkTimer:Timer;
 
     public function new(assets:Sprite, model:IPayTableItemModelImmutable) {
         _model = model;
@@ -102,8 +102,8 @@ class PayTableItemUI extends UIClip
     override private function init():Void {
         super.init();
 
-        timer = new Timer(250);
-        timer.addEventListener(TimerEvent.TIMER, onTimer);
+        blinkTimer = new Timer(250);
+        blinkTimer.addEventListener(TimerEvent.TIMER, onTimer);
 
         var tf:TextField;
         var bitmap:Bitmap;
@@ -166,7 +166,7 @@ class PayTableItemUI extends UIClip
     {
         _showHighLight = value;
 
-        value ? timer.start() : timer.reset();
+        value ? blinkTimer.start() : blinkTimer.reset();
 
         hideOrShowHighLight();
     }
