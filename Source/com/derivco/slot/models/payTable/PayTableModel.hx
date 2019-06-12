@@ -4,8 +4,10 @@ import com.derivco.slot.models.common.BaseModel;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 class PayTableModel extends BaseModel implements IPayTableModel{
     public var payout(get, never):Int;
+    public var payTableListImmutable(get, never):Array<IPayTableItemModelImmutable>;
 
     private var _payTableList:Array<IPayTableItemModel> = new Array<IPayTableItemModel>();
+    private var _payTableListImmutable:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
 
     private var _payout:Int;
 
@@ -17,6 +19,7 @@ class PayTableModel extends BaseModel implements IPayTableModel{
         super.setJsonData(json);
 
         untyped _payTableList.length = 0;
+        untyped _payTableListImmutable.length = 0;
 
         var payTableJsonList:Array<Dynamic> = cast (json.payTableList, Array<Dynamic>);
 
@@ -26,6 +29,7 @@ class PayTableModel extends BaseModel implements IPayTableModel{
             model.setJsonData(payTableItemJson);
 
             _payTableList.push(model);
+            _payTableListImmutable.push(model);
         }
     }
 
@@ -57,5 +61,9 @@ class PayTableModel extends BaseModel implements IPayTableModel{
 
     private function get_payout():Int {
         return _payout;
+    }
+
+    private function get_payTableListImmutable():Array<IPayTableItemModelImmutable> {
+        return _payTableListImmutable;
     }
 }

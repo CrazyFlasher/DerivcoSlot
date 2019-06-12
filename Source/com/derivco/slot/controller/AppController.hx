@@ -47,6 +47,7 @@ class AppController extends EventDispatcher implements IAppController {
 
         if (appModel.hasEnoughMoney)
         {
+            payTableModel.reset();
             appModel.setBalance(appModel.balance - appModel.spinCost);
             appModel.setLocked(true);
 

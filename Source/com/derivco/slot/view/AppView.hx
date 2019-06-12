@@ -9,6 +9,7 @@ import com.derivco.slot.models.reels.IReelsModelImmutable;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 import com.derivco.slot.models.reels.ReelsModelEventType;
 import com.derivco.slot.view.ui.ButtonUI;
+import com.derivco.slot.view.ui.PayTableUI;
 import com.derivco.slot.view.ui.ReelUI;
 import com.derivco.slot.view.ui.ReelUIEventType;
 import openfl.display.DisplayObjectContainer;
@@ -39,6 +40,7 @@ class AppView extends EventDispatcher {
     private var payoutValueTf:TextField;
 
     private var reelUIList:Array<ReelUI> = new Array<ReelUI>();
+    private var payTableUI:PayTableUI;
 
     public function new(context:IAppContextImmutable, root:DisplayObjectContainer) {
         super();
@@ -59,6 +61,7 @@ class AppView extends EventDispatcher {
         reelsModel.addEventListener(ReelsModelEventType.SPIN, showResult);
         payTableModel.addEventListener(PayTableModelEventType.RESETED, updateValues);
         appModel.addEventListener(AppModelEventType.LOCKED_UPDATED, appLockedUpdated);
+        appModel.addEventListener(AppModelEventType.BALANCE_UPDATED, updateValues);
 
         container = new Sprite();
         root.addChild(container);
@@ -75,7 +78,8 @@ class AppView extends EventDispatcher {
 
         spinCostValueTf.restrict = balanceValueTf.restrict = "0-9";
 
-        createReels(assets);
+        createReels();
+        createPaytable();
 
         updateValues();
     }
@@ -84,10 +88,7 @@ class AppView extends EventDispatcher {
     {
         container.mouseEnabled = container.mouseChildren = !appModel.isLocked;
 
-        if (!appModel.isLocked)
-        {
-            updateValues();
-        }
+        updateValues();
     }
 
     private function spinBtnClick(event:MouseEvent):Void
@@ -116,7 +117,12 @@ class AppView extends EventDispatcher {
         }
     }
 
-    private function createReels(assets:DisplayObjectContainer):Void
+    private function createPaytable():Void
+    {
+        payTableUI = new PayTableUI(getSprite("paytableHolder"), payTableModel);
+    }
+
+    private function createReels():Void
     {
         var reelUI:ReelUI;
         var modelList:Array<ISingleReelModelImmutable> = reelsModel.reelListImmutable;
@@ -125,7 +131,7 @@ class AppView extends EventDispatcher {
         for (singleReelModel in modelList)
         {
             index = modelList.indexOf(singleReelModel);
-            reelUI = new ReelUI(cast (assets.getChildByName("reel_" + index), Sprite));
+            reelUI = new ReelUI(getSprite("reel_" + index));
             reelUI.update(singleReelModel);
             reelUIList.push(reelUI);
 
@@ -145,9 +151,12 @@ class AppView extends EventDispatcher {
 
     private function updateValues(event:Event = null):Void
     {
-        balanceValueTf.text = Std.string(appModel.balance);
-        spinCostValueTf.text = Std.string(appModel.spinCost);
-        payoutValueTf.text = Std.string(payTableModel.payout);
+        if (!appModel.isLocked)
+        {
+            balanceValueTf.text = Std.string(appModel.balance);
+            spinCostValueTf.text = Std.string(appModel.spinCost);
+            payoutValueTf.text = Std.string(payTableModel.payout);
+        }
     }
 
     private function getSprite(name:String):Sprite
