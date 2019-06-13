@@ -5,7 +5,8 @@
 	<app main="Main" path="Export" file="DerivcoSlot" />
 
 	<window hardware="true" allow-shaders="true" require-shaders="true" depth-buffer="true" stencil-buffer="true" />
-	<window if="html5 || flash" width="1280" height="960" fps="60" background="#ffffff" resizable="false"/>
+	<window if="html5 || flash" fps="60" width="1280" height="720" background="#FFFFFF" resizable="true"/>
+	<window if="mobile" orientation="landscape" />
 
 	<source path="Source" />
 	
