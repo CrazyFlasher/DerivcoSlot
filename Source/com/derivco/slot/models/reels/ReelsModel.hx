@@ -29,10 +29,11 @@ class ReelsModel extends BaseModel implements IReelsModel {
         }
     }
 
-    public function spin():IReelsModel {
-        for (reelModel in _reelList)
+    public function spin(fixedDataList:Array<FixedResultVo>):IReelsModel {
+        for (i in 0..._reelList.length)
         {
-            reelModel.spin();
+            var reelModel:ISingleReelModel = _reelList[i];
+            reelModel.spin(fixedDataList[i]);
         }
 
         dispatchEvent(new Event(ReelsModelEventType.SPIN));

@@ -57,11 +57,19 @@ class AppContext implements IAppContext {
         view = new AppView(this, viewRoot);
 
         view.addEventListener(AppViewEventType.SPIN, function(e:Event):Void {
-            controller.spin();
+            controller.spin(view.fixedDataList);
         });
 
         view.addEventListener(AppViewEventType.REELS_STOPPED, function(e:Event):Void {
             controller.resultsShown();
+        });
+
+        view.addEventListener(AppViewEventType.CHANGE_BALANCE, function(e:Event):Void {
+            controller.updateBalance(view.newBalanceValue);
+        });
+
+        view.addEventListener(AppViewEventType.CHANGE_SPIN_COST, function(e:Event):Void {
+            controller.updateSpinCost(view.newSpinCostValue);
         });
     }
 

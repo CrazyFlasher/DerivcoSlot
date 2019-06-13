@@ -4,13 +4,14 @@
 	<meta title="DerivcoSlot" package="com.sample.derivcoslot" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="DerivcoSlot" />
 
-	<window if="html5 || flash" width="700" height="340" fps="60"/>
+	<window if="html5 || flash" width="960" height="540" fps="60"/>
 
 	<source path="Source" />
 	
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="layout" />
+	<haxelib name="haxeui-core" />
+	<haxelib name="haxeui-openfl" />
 
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 

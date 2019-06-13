@@ -1,6 +1,6 @@
 package com.derivco.slot.view;
 
-import com.derivco.slot.view.ui.WinLinesUI;
+import com.derivco.slot.models.reels.FixedResultVo;
 import com.derivco.slot.context.IAppContextImmutable;
 import com.derivco.slot.models.app.AppModelEventType;
 import com.derivco.slot.models.app.IAppModelImmutable;
@@ -11,14 +11,17 @@ import com.derivco.slot.models.reels.IReelsModelImmutable;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 import com.derivco.slot.models.reels.ReelsModelEventType;
 import com.derivco.slot.view.ui.ButtonUI;
+import com.derivco.slot.view.ui.FixedModeUI;
 import com.derivco.slot.view.ui.PayTableUI;
 import com.derivco.slot.view.ui.PayTableUIEventType;
 import com.derivco.slot.view.ui.ReelUI;
 import com.derivco.slot.view.ui.ReelUIEventType;
+import com.derivco.slot.view.ui.WinLinesUI;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
+import openfl.events.FocusEvent;
 import openfl.events.MouseEvent;
 import openfl.text.TextField;
 import openfl.utils.Assets;
@@ -27,6 +30,10 @@ import Std;
 using Lambda;
 
 class AppView extends EventDispatcher {
+
+    public var fixedDataList(get, never):Array<FixedResultVo>;
+    public var newBalanceValue(get, never):Int;
+    public var newSpinCostValue(get, never):Int;
 
     private var assets:DisplayObjectContainer;
 
@@ -47,9 +54,13 @@ class AppView extends EventDispatcher {
     private var reelUIList:Array<ReelUI> = new Array<ReelUI>();
     private var payTableUI:PayTableUI;
     private var linesUI:WinLinesUI;
+    private var fixedModelUI:FixedModeUI;
 
     private var highLightItemIndex:Int;
     private var highLightedSymbolIdList:Array<String> = new Array<String>();
+
+    private var _newBalanceValue:Int;
+    private var _newSpinCostValue:Int;
 
     public function new(context:IAppContextImmutable, root:DisplayObjectContainer) {
         super();
@@ -70,6 +81,7 @@ class AppView extends EventDispatcher {
         payTableModel.addEventListener(PayTableModelEventType.RESETED, updateValues);
         appModel.addEventListener(AppModelEventType.LOCKED_UPDATED, appLockedUpdated);
         appModel.addEventListener(AppModelEventType.BALANCE_UPDATED, updateValues);
+        appModel.addEventListener(AppModelEventType.SPIN_COST_UPDATED, updateValues);
 
         container = new Sprite();
         root.addChild(container);
@@ -81,7 +93,11 @@ class AppView extends EventDispatcher {
         spinBtn.assets.addEventListener(MouseEvent.CLICK, spinBtnClick);
 
         balanceValueTf = getTextField("balanceValueTf");
+        balanceValueTf.addEventListener(FocusEvent.FOCUS_OUT, balanceValueTfChanged);
+
         spinCostValueTf = getTextField("spinCostValueTf");
+        spinCostValueTf.addEventListener(FocusEvent.FOCUS_OUT, spinCostValueTfChanged);
+
         payoutValueTf = getTextField("payoutValueTf");
 
         spinCostValueTf.restrict = balanceValueTf.restrict = "0-9";
@@ -89,8 +105,28 @@ class AppView extends EventDispatcher {
         createReels();
         createPaytable();
         createWinLines();
+        createFixedMode();
 
         updateValues();
+    }
+
+    private function createFixedMode():Void
+    {
+        fixedModelUI = new FixedModeUI(getSprite("fixedModePlaceHolder"));
+    }
+
+    private function spinCostValueTfChanged(event:FocusEvent):Void
+    {
+        _newSpinCostValue = Std.parseInt(spinCostValueTf.text);
+
+        dispatchEvent(new Event(AppViewEventType.CHANGE_SPIN_COST));
+    }
+
+    private function balanceValueTfChanged(event:FocusEvent):Void
+    {
+        _newBalanceValue = Std.parseInt(balanceValueTf.text);
+
+        dispatchEvent(new Event(AppViewEventType.CHANGE_BALANCE));
     }
 
     private function createWinLines():Void
@@ -176,6 +212,8 @@ class AppView extends EventDispatcher {
 
             linesUI.reset();
         }
+
+        spinBtn.enabled = appModel.hasEnoughMoney;
     }
 
     private function startHighLight():Void
@@ -227,5 +265,17 @@ class AppView extends EventDispatcher {
     private function getTextField(name:String):TextField
     {
         return cast (assets.getChildByName(name), TextField);
+    }
+
+    private function get_newBalanceValue():Int {
+        return _newBalanceValue;
+    }
+
+    private function get_newSpinCostValue():Int {
+        return _newSpinCostValue;
+    }
+
+    private function get_fixedDataList():Array<FixedResultVo> {
+        return fixedModelUI.fixedDataList;
     }
 }

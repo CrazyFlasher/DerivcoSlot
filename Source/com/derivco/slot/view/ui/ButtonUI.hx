@@ -48,6 +48,8 @@ class ButtonUI extends UIClip {
     private function set_enabled(value:Bool):Bool {
         _assets.mouseEnabled = _assets.mouseChildren = value;
 
+        _assets.alpha = value ? 1.0 : 0.5;
+
         return _enabled = value;
     }
 }

@@ -56,7 +56,7 @@ class ReelUI extends UIClip {
         }
     }
 
-    public function highLightSymbol(symbolIdList:Array<Dynamic>, lineId:String, excludeList:Array<String>):String
+    public function highLightSymbol(symbolIdList:Array<Dynamic>, lineId:String, shownSymbolList:Array<String>):String
     {
         reset();
 
@@ -73,7 +73,7 @@ class ReelUI extends UIClip {
 
         for (symbolId in symbolIdList)
         {
-            if (visibleSymbolList[symboldIndex].name == symbolId && !contains(excludeList, symbolId))
+            if (visibleSymbolList[symboldIndex].name == symbolId && !allSymbolsShown(shownSymbolList, symbolIdList, symbolId))
             {
                 visibleSymbolList[symboldIndex].getChildByName("rect").visible = true;
 
@@ -84,17 +84,28 @@ class ReelUI extends UIClip {
         return null;
     }
 
-    private function contains(arr:Array<String>, string:String):Bool
+    private function allSymbolsShown(shownSymbolList:Array<String>, allSymbolIdList:Array<Dynamic>, symbolId:String):Bool
     {
-        for (s in arr)
+        var totalCount:Int = 0;
+        var shownCount:Int = 0;
+
+        for (shownId in shownSymbolList)
         {
-            if (s == string)
+            if (shownId == symbolId)
             {
-                return true;
+                shownCount++;
             }
         }
 
-        return false;
+        for (symId in allSymbolIdList)
+        {
+            if (symId == symbolId)
+            {
+                totalCount++;
+            }
+        }
+
+        return shownCount == totalCount;
     }
 
     private function createSymbols(storeToMap:Bool):Void
@@ -181,7 +192,7 @@ class ReelUI extends UIClip {
                 firstSymbolY -= symbol.height * model.symbolList.length;
             }
 
-            Actuate.tween(placeHolder, 0.5, {y: -firstSymbolY}).onComplete(
+            Actuate.tween(placeHolder, 0.25, {y: -firstSymbolY}).onComplete(
                 function():Void
                 {
                     showResult(0);

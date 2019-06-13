@@ -1,4 +1,5 @@
 package com.derivco.slot.controller;
+import com.derivco.slot.models.reels.FixedResultVo;
 import com.derivco.slot.context.IAppContext;
 import com.derivco.slot.models.app.IAppModel;
 import com.derivco.slot.models.payTable.IPayTableModel;
@@ -43,7 +44,7 @@ class AppController extends EventDispatcher implements IAppController {
         });
     }
 
-    public function spin():IAppController {
+    public function spin(fixedDataList:Array<FixedResultVo>):IAppController {
 
         if (appModel.hasEnoughMoney)
         {
@@ -51,7 +52,7 @@ class AppController extends EventDispatcher implements IAppController {
             appModel.setBalance(appModel.balance - appModel.spinCost);
             appModel.setLocked(true);
 
-            reelsModel.spin();
+            reelsModel.spin(fixedDataList);
             payTableModel.calculatePayout(reelsModel.reelListImmutable);
             appModel.setBalance(appModel.balance + payTableModel.payout);
         }
@@ -64,4 +65,17 @@ class AppController extends EventDispatcher implements IAppController {
 
         return this;
     }
+
+    public function updateBalance(value:Int):IAppController {
+        appModel.setBalance(value);
+
+        return this;
+    }
+
+    public function updateSpinCost(value:Int):IAppController {
+        appModel.setSpinCost(value);
+
+        return this;
+    }
+
 }

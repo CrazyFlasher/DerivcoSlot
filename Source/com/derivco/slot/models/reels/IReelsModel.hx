@@ -3,5 +3,5 @@ import com.derivco.slot.models.common.IBaseModel;
 interface IReelsModel extends IBaseModel extends IReelsModelImmutable {
     var reelList(get, never):Array<ISingleReelModel>;
 
-    function spin():IReelsModel;
+    function spin(fixedDataList:Array<FixedResultVo>):IReelsModel;
 }
