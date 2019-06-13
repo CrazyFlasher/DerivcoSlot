@@ -9,7 +9,9 @@
 	<window if="mobile" orientation="landscape" />
 
 	<source path="Source" />
-	
+
+	<haxeflag name="-dce full" />
+
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<haxelib name="haxeui-core" />
