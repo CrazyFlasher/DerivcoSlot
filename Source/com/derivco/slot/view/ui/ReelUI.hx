@@ -206,6 +206,7 @@ class ReelUI extends UIClip {
     private function enterFrame(event:Event):Void
     {
         placeHolder.y += 35;
+
         if (placeHolder.y > 0)
         {
             placeHolder.y = -10 * 121;

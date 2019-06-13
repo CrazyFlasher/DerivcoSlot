@@ -19,6 +19,7 @@ class ButtonUI extends UIClip {
 
         scaleOrigin = _assets.scaleX;
 
+        _assets.buttonMode = true;
         _assets.addEventListener(MouseEvent.MOUSE_DOWN, down);
         _assets.addEventListener(MouseEvent.CLICK, click);
         _assets.addEventListener(MouseEvent.MOUSE_UP, up);

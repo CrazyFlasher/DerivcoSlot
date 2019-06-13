@@ -4,7 +4,8 @@
 	<meta title="DerivcoSlot" package="com.sample.derivcoslot" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="DerivcoSlot" />
 
-	<window if="html5 || flash" width="960" height="540" fps="60"/>
+	<window hardware="true" allow-shaders="true" require-shaders="true" depth-buffer="true" stencil-buffer="true" />
+	<window if="html5 || flash" width="1280" height="960" fps="60" background="#ffffff" resizable="false"/>
 
 	<source path="Source" />
 	

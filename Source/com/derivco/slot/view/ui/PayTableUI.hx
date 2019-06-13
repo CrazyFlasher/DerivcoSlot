@@ -114,7 +114,7 @@ class PayTableItemUI extends UIClip
             symbolId = _model.symbolIdList[i];
             bitmap = new Bitmap(Assets.getBitmapData("assets/reels/" + symbolId + ".png"));
             bitmap.smoothing = true;
-            bitmap.height = bitmap.width = 28;
+            bitmap.scaleX = bitmap.scaleY = 0.35;
 
             _assets.addChild(bitmap);
 
@@ -155,7 +155,7 @@ class PayTableItemUI extends UIClip
     private function getNewTf(text:String):TextField {
 
         var tf:TextField = new TextField();
-        tf.defaultTextFormat = new TextFormat("Arial", 16);
+        tf.defaultTextFormat = new TextFormat("Arial", 20);
         tf.autoSize = TextFieldAutoSize.LEFT;
         tf.text = text;
 

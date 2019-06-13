@@ -11,7 +11,7 @@ class PayTableModel extends BaseModel implements IPayTableModel{
     private var _payTableListImmutable:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
     private var _itemListWithPayout:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
 
-    private var _payout:Int;
+    private var _payout:Int = 0;
 
     public function new() {
         super();
