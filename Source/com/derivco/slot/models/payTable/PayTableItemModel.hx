@@ -2,6 +2,7 @@ package com.derivco.slot.models.payTable;
 import com.derivco.slot.models.common.BaseModel;
 class PayTableItemModel extends BaseModel implements IPayTableItemModel {
     public var lastPayout(get, never):Int;
+    public var lastWinLine(get, never):String;
 
     public var lineId(get, never):String;
     public var symbolIdList(get, never):Array<Dynamic>;
@@ -12,6 +13,7 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel {
     private var _payout:Int;
 
     private var _lastPayout:Int;
+    private var _lastWinLine:String;
 
     public function new() {
         super();
@@ -27,6 +29,7 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel {
 
     public function reset():IPayTableItemModel {
         _lastPayout = 0;
+        _lastWinLine = null;
 
         return this;
     }
@@ -50,6 +53,7 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel {
             trace("payout: " + lineSymbolList + ": " + lineId + ": value " + _payout);
 
             _lastPayout = _payout;
+            _lastWinLine = lineId;
 
             return _lastPayout;
         }
@@ -71,5 +75,9 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel {
 
     private function get_lastPayout():Int {
         return _lastPayout;
+    }
+
+    private function get_lastWinLine():String {
+        return _lastWinLine;
     }
 }

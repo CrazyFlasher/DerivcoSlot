@@ -179,37 +179,16 @@ class AppView extends EventDispatcher {
         var model:IPayTableItemModelImmutable = payTableModel.itemListWithPayout[highLightItemIndex];
         payTableUI.highLightItem(model);
 
-        var success:Bool = reelUIList[0].highLightSymbol(model.symbolIdList[0], 0);
+        var highLightedList:Array<String> = new Array<String>();
 
-        if (!success)
+        for (reelUI in reelUIList)
         {
-            success = reelUIList[1].highLightSymbol(model.symbolIdList[0], 1);
-            if (!success)
-            {
-                success = reelUIList[2].highLightSymbol(model.symbolIdList[0], 2);
-            }
-        }
+            reelUI.reset();
 
-        success = reelUIList[0].highLightSymbol(model.symbolIdList[1], 0);
-        if (!success)
-        {
-            success = reelUIList[1].highLightSymbol(model.symbolIdList[1], 1);
-            if (!success)
+            var highLightedSymbolId:String = reelUI.highLightSymbol(model.symbolIdList, model.lastWinLine, highLightedList);
+            if (highLightedSymbolId != null)
             {
-                success = reelUIList[2].highLightSymbol(model.symbolIdList[1], 2);
-            }
-        }
-
-        if (model.symbolIdList.length > 2)
-        {
-            success = reelUIList[0].highLightSymbol(model.symbolIdList[2], 0);
-            if (!success)
-            {
-                success = reelUIList[1].highLightSymbol(model.symbolIdList[2], 1);
-                if (!success)
-                {
-                    success = reelUIList[2].highLightSymbol(model.symbolIdList[2], 2);
-                }
+                highLightedList.push(highLightedSymbolId);
             }
         }
     }

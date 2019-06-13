@@ -1,5 +1,7 @@
 package com.derivco.slot.view.ui;
 
+import Array;
+import flash.geom.Rectangle;
 import openfl.display.Graphics;
 import com.derivco.slot.models.reels.ISingleReelModelImmutable;
 import motion.Actuate;
@@ -16,6 +18,7 @@ class ReelUI extends UIClip {
 
     private var symbolMap:Dictionary<String, Sprite>;
     private var symbolList:Array<Sprite>;
+    private var visibleSymbolList:Array<Sprite>;
 
     private var placeHolder:Sprite;
     private var symbolY:Float;
@@ -32,6 +35,7 @@ class ReelUI extends UIClip {
 
         symbolMap = new Dictionary();
         symbolList = new Array<Sprite>();
+        visibleSymbolList = new Array<Sprite>();
 
         placeHolder = cast(_assets.getChildByName("placeHolder"), Sprite);
 
@@ -46,22 +50,48 @@ class ReelUI extends UIClip {
 
     public function reset():Void
     {
-        for (symbolId in symbolMap)
+        for (symbol in visibleSymbolList)
         {
-            var symbol:Sprite = symbolMap.get(symbolId);
             symbol.getChildByName("rect").visible = false;
         }
     }
 
-    public function highLightSymbol(symbolId:String, position:Int):Bool
+    public function highLightSymbol(symbolIdList:Array<Dynamic>, lineId:String, excludeList:Array<String>):String
     {
         reset();
 
-        if (symbolList[position + 1] == symbolId)
-        {
-            symbolList[position + 1].getChildByName("rect").visible = true;
+        var symboldIndex:Int = 0;
 
-            return true;
+        if (lineId == "center")
+        {
+            symboldIndex = 1;
+        } else
+        if (lineId == "bottom")
+        {
+            symboldIndex = 2;
+        }
+
+        for (symbolId in symbolIdList)
+        {
+            if (visibleSymbolList[symboldIndex].name == symbolId && !contains(excludeList, symbolId))
+            {
+                visibleSymbolList[symboldIndex].getChildByName("rect").visible = true;
+
+                return symbolId;
+            }
+        }
+
+        return null;
+    }
+
+    private function contains(arr:Array<String>, string:String):Bool
+    {
+        for (s in arr)
+        {
+            if (s == string)
+            {
+                return true;
+            }
         }
 
         return false;
@@ -73,13 +103,16 @@ class ReelUI extends UIClip {
         for (symbolId in model.symbolList)
         {
             symbol = getSymbol("assets/reels/" + symbolId + ".png");
+            symbol.name = symbolId;
 
             placeHolder.addChild(symbol);
+
             if (storeToMap)
             {
                 symbolMap.set(symbolId, symbol);
-                symbolList.push(symbol);
             }
+
+            symbolList.push(symbol);
 
             symbol.y = symbolY;
             symbolY += symbol.height;
@@ -91,6 +124,7 @@ class ReelUI extends UIClip {
         var sym:Sprite = new Sprite();
         var bitmap:Bitmap = new Bitmap(Assets.getBitmapData(assetId));
 
+        sym.addChild(bitmap);
         sym.addChild(bitmap);
 
         var rect:Sprite = new Sprite();
@@ -109,9 +143,22 @@ class ReelUI extends UIClip {
 
     public function showResult(spinTime:Float):Void
     {
+        reset();
+
         var symbol:DisplayObject = symbolMap.get(model.symbolList[0]);
         var firstSymbolY:Float = symbol.y + symbol.height / 2;
         placeHolder.y = -firstSymbolY;
+
+        untyped visibleSymbolList.length = 0;
+
+        for (symbol in symbolList)
+        {
+            var bounds:Rectangle = symbol.getBounds(placeHolder);
+            if (bounds.topLeft.y + placeHolder.y >= 0 && bounds.bottomRight.y + placeHolder.y < symbol.height * 4)
+            {
+                visibleSymbolList.push(symbol);
+            }
+        }
 
         if (spinTime > 0)
         {

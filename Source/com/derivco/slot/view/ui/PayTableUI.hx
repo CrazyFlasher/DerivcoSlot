@@ -144,7 +144,7 @@ class PayTableItemUI extends UIClip
         highLightRect = new Sprite();
 
         var graphics:Graphics = highLightRect.graphics;
-        graphics.lineStyle(2, 0xffcc00);
+        graphics.lineStyle(2, 0xff0000);
         graphics.drawRect(0, 0, _assets.width, _assets.height);
         graphics.endFill();
 

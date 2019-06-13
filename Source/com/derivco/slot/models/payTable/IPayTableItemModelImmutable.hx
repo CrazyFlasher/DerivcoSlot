@@ -6,4 +6,5 @@ interface IPayTableItemModelImmutable extends IEventDispatcher{
     var payout(get, never):Int;
 
     var lastPayout(get, never):Int;
+    var lastWinLine(get, never):String;
 }
