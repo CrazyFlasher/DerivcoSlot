@@ -1,5 +1,6 @@
 package com.derivco.slot.view;
 
+import com.derivco.slot.view.ui.WinLinesUI;
 import com.derivco.slot.context.IAppContextImmutable;
 import com.derivco.slot.models.app.AppModelEventType;
 import com.derivco.slot.models.app.IAppModelImmutable;
@@ -45,8 +46,10 @@ class AppView extends EventDispatcher {
 
     private var reelUIList:Array<ReelUI> = new Array<ReelUI>();
     private var payTableUI:PayTableUI;
+    private var linesUI:WinLinesUI;
 
     private var highLightItemIndex:Int;
+    private var highLightedSymbolIdList:Array<String> = new Array<String>();
 
     public function new(context:IAppContextImmutable, root:DisplayObjectContainer) {
         super();
@@ -85,8 +88,14 @@ class AppView extends EventDispatcher {
 
         createReels();
         createPaytable();
+        createWinLines();
 
         updateValues();
+    }
+
+    private function createWinLines():Void
+    {
+        linesUI = new WinLinesUI(getSprite("winLines"));
     }
 
     private function appLockedUpdated(event:Event):Void
@@ -164,6 +173,8 @@ class AppView extends EventDispatcher {
             {
                 reelUI.reset();
             }
+
+            linesUI.reset();
         }
     }
 
@@ -179,18 +190,20 @@ class AppView extends EventDispatcher {
         var model:IPayTableItemModelImmutable = payTableModel.itemListWithPayout[highLightItemIndex];
         payTableUI.highLightItem(model);
 
-        var highLightedList:Array<String> = new Array<String>();
+        untyped highLightedSymbolIdList.length = 0;
 
         for (reelUI in reelUIList)
         {
             reelUI.reset();
 
-            var highLightedSymbolId:String = reelUI.highLightSymbol(model.symbolIdList, model.lastWinLine, highLightedList);
+            var highLightedSymbolId:String = reelUI.highLightSymbol(model.symbolIdList, model.lastWinLine, highLightedSymbolIdList);
             if (highLightedSymbolId != null)
             {
-                highLightedList.push(highLightedSymbolId);
+                highLightedSymbolIdList.push(highLightedSymbolId);
             }
         }
+
+        linesUI.showLine(model.lastWinLine);
     }
 
     private function payTableUIHighLightComplete(event:Event):Void
