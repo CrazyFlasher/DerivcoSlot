@@ -1,8 +1,7 @@
 package com.simple.slot.models.payTable;
-import ISingleReelModelImmutable;
-import ISingleReelModelImmutable;
-import openfl.events.Event;
+import com.simple.slot.models.reels.ISingleReelModelImmutable;
 import com.simple.slot.models.common.BaseModel;
+import openfl.events.Event;
 class PayTableModel extends BaseModel implements IPayTableModel{
     public var payout(get, never):Int;
     public var payTableListImmutable(get, never):Array<IPayTableItemModelImmutable>;

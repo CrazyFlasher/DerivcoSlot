@@ -1,8 +1,7 @@
 package com.simple.slot.view.ui;
 
-import ISingleReelModelImmutable;
-import ISingleReelModelImmutable;
 import Array;
+import com.simple.slot.models.reels.ISingleReelModelImmutable;
 import flash.geom.Rectangle;
 import motion.Actuate;
 import motion.easing.Back;

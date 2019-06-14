@@ -1,9 +1,9 @@
 package com.simple.slot.controller;
-import IPayTableModel;
-import IAppContext;
-import IAppModel;
-import IReelsModel;
+import com.simple.slot.context.IAppContext;
+import com.simple.slot.models.app.IAppModel;
+import com.simple.slot.models.payTable.IPayTableModel;
 import com.simple.slot.models.reels.FixedResultVo;
+import com.simple.slot.models.reels.IReelsModel;
 import haxe.Json;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;

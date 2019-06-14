@@ -1,16 +1,14 @@
 package com.simple.slot.view;
 
-import IPayTableItemModelImmutable;
-import IAppContextImmutable;
-import IAppContextImmutable;
-import IAppModelImmutable;
-import ISingleReelModelImmutable;
-import IPayTableModelImmutable;
-import IReelsModelImmutable;
-import openfl.events.TouchEvent;
-import com.simple.slot.models.reels.FixedResultVo;
+import com.simple.slot.models.payTable.IPayTableItemModelImmutable;
+import com.simple.slot.models.reels.ISingleReelModelImmutable;
+import com.simple.slot.models.payTable.IPayTableModelImmutable;
+import com.simple.slot.models.reels.IReelsModelImmutable;
+import com.simple.slot.models.app.IAppModelImmutable;
+import com.simple.slot.context.IAppContextImmutable;
 import com.simple.slot.models.app.AppModelEventType;
 import com.simple.slot.models.payTable.PayTableModelEventType;
+import com.simple.slot.models.reels.FixedResultVo;
 import com.simple.slot.models.reels.ReelsModelEventType;
 import com.simple.slot.view.ui.ButtonUI;
 import com.simple.slot.view.ui.FixedModeUI;

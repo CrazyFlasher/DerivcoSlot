@@ -1,22 +1,16 @@
 package com.simple.slot.view.ui;
-import IPayTableItemModelImmutable;
-import IPayTableItemModelImmutable;
-import IPayTableItemModelImmutable;
-import IPayTableItemModelImmutable;
-import IPayTableItemModelImmutable;
-import IPayTableModelImmutable;
-import IPayTableModelImmutable;
-import openfl.events.Event;
-import openfl.events.TimerEvent;
-import openfl.utils.Timer;
-import openfl.Lib;
-import openfl.display.Graphics;
+import com.simple.slot.models.payTable.IPayTableItemModelImmutable;
+import com.simple.slot.models.payTable.IPayTableModelImmutable;
 import flash.text.TextFieldAutoSize;
 import openfl.display.Bitmap;
+import openfl.display.Graphics;
 import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.events.TimerEvent;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.utils.Assets;
+import openfl.utils.Timer;
 class PayTableUI extends UIClip {
 
     private var model:IPayTableModelImmutable;

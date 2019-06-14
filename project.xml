@@ -8,6 +8,7 @@
 			height="720" background="#FFFFFF"/>
 
 	<window if="mobile" orientation="landscape" fullscreen="true" />
+	<window if="html5" resizable="false" />
 
 	<source path="Source" />
 

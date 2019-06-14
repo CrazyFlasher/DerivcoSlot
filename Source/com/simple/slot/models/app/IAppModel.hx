@@ -1,5 +1,5 @@
 package com.simple.slot.models.app;
-import IBaseModel;
+import com.simple.slot.models.common.IBaseModel;
 interface IAppModel extends IBaseModel extends IAppModelImmutable{
     function setIsTampering(value:Bool):IAppModel;
     function setBalance(value:Int):IAppModel;
