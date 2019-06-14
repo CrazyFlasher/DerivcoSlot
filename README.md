@@ -1,6 +1,7 @@
-# SimpleSlot
-Simple slot machine, written in **Haxe** language using **OpenFL**.<br>
-Compiles to all OpenFL targets.
+## SimpleSlot
+
+Simple slot machine, written in **Haxe** language using **OpenFL**. Compiles to all OpenFL targets.
+
 ---
 ###### Example binaries:
 * [JavaScript](http://188.166.108.195/slot/Export/html5/)
