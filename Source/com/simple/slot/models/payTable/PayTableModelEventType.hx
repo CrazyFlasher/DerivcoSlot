@@ -1,4 +1,5 @@
 package com.simple.slot.models.payTable;
-class PayTableModelEventType {
+class PayTableModelEventType
+{
     public static inline var RESETED:String = "RESETED";
 }

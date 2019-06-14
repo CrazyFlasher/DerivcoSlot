@@ -1,4 +1,5 @@
 package com.simple.slot.context;
+
 import com.simple.slot.controller.IAppController;
 import com.simple.slot.models.payTable.IPayTableModelImmutable;
 import com.simple.slot.models.reels.IReelsModelImmutable;
@@ -15,7 +16,9 @@ import com.simple.slot.view.AppView;
 import com.simple.slot.view.AppViewEventType;
 import openfl.display.DisplayObjectContainer;
 import openfl.events.Event;
-class AppContext implements IAppContext {
+
+class AppContext implements IAppContext
+{
     public var appModel(get, never):IAppModel;
     public var reelsModel(get, never):IReelsModel;
     public var payTableModel(get, never):IPayTableModel;
@@ -34,7 +37,8 @@ class AppContext implements IAppContext {
 
     private var view:AppView;
 
-    public function new(viewRoot:DisplayObjectContainer) {
+    public function new(viewRoot:DisplayObjectContainer)
+    {
         this.viewRoot = viewRoot;
 
         init();
@@ -56,44 +60,54 @@ class AppContext implements IAppContext {
     {
         view = new AppView(this, viewRoot);
 
-        view.addEventListener(AppViewEventType.SPIN, function(e:Event):Void {
+        view.addEventListener(AppViewEventType.SPIN, function(e:Event):Void
+        {
             controller.spin(view.fixedDataList);
         });
 
-        view.addEventListener(AppViewEventType.REELS_STOPPED, function(e:Event):Void {
+        view.addEventListener(AppViewEventType.REELS_STOPPED, function(e:Event):Void
+        {
             controller.resultsShown();
         });
 
-        view.addEventListener(AppViewEventType.CHANGE_BALANCE, function(e:Event):Void {
+        view.addEventListener(AppViewEventType.CHANGE_BALANCE, function(e:Event):Void
+        {
             controller.updateBalance(view.newBalanceValue);
         });
 
-        view.addEventListener(AppViewEventType.CHANGE_SPIN_COST, function(e:Event):Void {
+        view.addEventListener(AppViewEventType.CHANGE_SPIN_COST, function(e:Event):Void
+        {
             controller.updateSpinCost(view.newSpinCostValue);
         });
     }
 
-    function get_appModel():IAppModel {
+    function get_appModel():IAppModel
+    {
         return _appModel;
     }
 
-    function get_reelsModel():IReelsModel {
+    function get_reelsModel():IReelsModel
+    {
         return _reelsModel;
     }
 
-    function get_payTableModel():IPayTableModel {
+    function get_payTableModel():IPayTableModel
+    {
         return _payTableModel;
     }
 
-    function get_appModelImmutable():IAppModelImmutable {
+    function get_appModelImmutable():IAppModelImmutable
+    {
         return _appModel;
     }
 
-    function get_reelsModelImmutable():IReelsModelImmutable {
+    function get_reelsModelImmutable():IReelsModelImmutable
+    {
         return _reelsModel;
     }
 
-    function get_payTableModelImmutable():IPayTableModelImmutable {
+    function get_payTableModelImmutable():IPayTableModelImmutable
+    {
         return _payTableModel;
     }
 }

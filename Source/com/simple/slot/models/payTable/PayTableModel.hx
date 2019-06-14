@@ -2,7 +2,8 @@ package com.simple.slot.models.payTable;
 import com.simple.slot.models.reels.ISingleReelModelImmutable;
 import com.simple.slot.models.common.BaseModel;
 import openfl.events.Event;
-class PayTableModel extends BaseModel implements IPayTableModel{
+class PayTableModel extends BaseModel implements IPayTableModel
+{
     public var payout(get, never):Int;
     public var payTableListImmutable(get, never):Array<IPayTableItemModelImmutable>;
     public var itemListWithPayout(get, never):Array<IPayTableItemModelImmutable>;
@@ -13,7 +14,8 @@ class PayTableModel extends BaseModel implements IPayTableModel{
 
     private var _payout:Int = 0;
 
-    public function new() {
+    public function new()
+    {
         super();
     }
 

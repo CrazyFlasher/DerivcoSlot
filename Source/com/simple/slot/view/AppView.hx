@@ -27,9 +27,8 @@ import openfl.text.TextField;
 import openfl.utils.Assets;
 import Std;
 
-using Lambda;
-
-class AppView extends EventDispatcher {
+class AppView extends EventDispatcher
+{
 
     public var fixedDataList(get, never):Array<FixedResultVo>;
     public var newBalanceValue(get, never):Int;
@@ -62,7 +61,8 @@ class AppView extends EventDispatcher {
     private var _newBalanceValue:Int;
     private var _newSpinCostValue:Int;
 
-    public function new(context:IAppContextImmutable, root:DisplayObjectContainer) {
+    public function new(context:IAppContextImmutable, root:DisplayObjectContainer)
+    {
         super();
 
         this.context = context;

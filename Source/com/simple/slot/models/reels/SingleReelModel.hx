@@ -1,28 +1,33 @@
 package com.simple.slot.models.reels;
+
 import com.simple.slot.models.common.BaseModel;
 
-class SingleReelModel extends BaseModel implements ISingleReelModel{
+class SingleReelModel extends BaseModel implements ISingleReelModel
+{
 
     public var symbolList(get, never):Array<Dynamic>;
 
     private var _symbolList:Array<Dynamic>;
 
-    public function new() {
+    public function new()
+    {
         super();
     }
 
-    override public function setJsonData(json:Dynamic):Void {
+    override public function setJsonData(json:Dynamic):Void
+    {
         super.setJsonData(json);
 
         _symbolList = cast (json, Array<Dynamic>);
     }
 
-    private function get_symbolList():Array<Dynamic> {
+    private function get_symbolList():Array<Dynamic>
+    {
         return _symbolList;
     }
 
-    public function spin(fixedResult:FixedResultVo = null):ISingleReelModel {
-
+    public function spin(fixedResult:FixedResultVo = null):ISingleReelModel
+    {
         var displacement:Int = 0;
 
         if (fixedResult == null)

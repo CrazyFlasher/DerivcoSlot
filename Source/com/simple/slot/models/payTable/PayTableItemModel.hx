@@ -1,6 +1,9 @@
 package com.simple.slot.models.payTable;
+
 import com.simple.slot.models.common.BaseModel;
-class PayTableItemModel extends BaseModel implements IPayTableItemModel {
+
+class PayTableItemModel extends BaseModel implements IPayTableItemModel
+{
     public var lastPayout(get, never):Int;
     public var lastWinLine(get, never):String;
 
@@ -15,7 +18,8 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel {
     private var _lastPayout:Int;
     private var _lastWinLine:String;
 
-    public function new() {
+    public function new()
+    {
         super();
     }
 

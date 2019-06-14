@@ -61,7 +61,5 @@ class Main extends Sprite
 		height = outRect.height;
 
 		addChild(viewRoot);
-
-		trace(stage.stageHeight);
 	}
 }

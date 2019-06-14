@@ -1,4 +1,6 @@
 package com.simple.slot.models.reels;
-class ReelsModelEventType {
+
+class ReelsModelEventType
+{
     public static inline var SPIN:String = "SPIN";
 }

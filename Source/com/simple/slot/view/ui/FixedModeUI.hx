@@ -1,8 +1,5 @@
 package com.simple.slot.view.ui;
-import haxe.ui.core.UIEvent;
-import haxe.ui.components.OptionBox;
-import openfl.events.Event;
-import openfl.events.TouchEvent;
+
 import com.simple.slot.models.reels.FixedResultVo;
 import haxe.ui.components.CheckBox;
 import haxe.ui.components.DropDown;
@@ -13,8 +10,11 @@ import haxe.ui.containers.VBox;
 import haxe.ui.core.Component;
 import haxe.ui.data.ArrayDataSource;
 import openfl.display.Sprite;
+import openfl.events.Event;
 import openfl.events.MouseEvent;
-class FixedModeUI extends UIClip {
+
+class FixedModeUI extends UIClip
+{
     public var fixedDataList(get, never):Array<FixedResultVo>;
 
     private var _enabled:Bool;
@@ -24,11 +24,13 @@ class FixedModeUI extends UIClip {
 
     private var itemUIList:Array<FixedModeItemUI> = new Array<FixedModeItemUI>();
 
-    public function new(assets:Sprite) {
+    public function new(assets:Sprite)
+    {
         super(assets);
     }
 
-    override private function init():Void {
+    override private function init():Void
+    {
         super.init();
 
         var main:VBox = new VBox();
@@ -55,6 +57,7 @@ class FixedModeUI extends UIClip {
         }
 
         main.addComponent(itemsContainer);
+
         _assets.addChild(main);
 
         enable(false);
@@ -98,7 +101,8 @@ class FixedModeUI extends UIClip {
         return box;
     }
 
-    private function get_fixedDataList():Array<FixedResultVo> {
+    private function get_fixedDataList():Array<FixedResultVo>
+    {
         untyped _fixedDataList.length = 0;
 
         if (_enabled)
@@ -113,7 +117,8 @@ class FixedModeUI extends UIClip {
     }
 }
 
-class FixedModeItemUI {
+class FixedModeItemUI
+{
 
     public var fixedResult(get, never):FixedResultVo;
     public var component(get, never):Component;
@@ -181,11 +186,13 @@ class FixedModeItemUI {
         box.addComponent(line);
     }
 
-    private function get_fixedResult():FixedResultVo {
+    private function get_fixedResult():FixedResultVo
+    {
         return new FixedResultVo(symbolDropDown.value.toString(), positionDropDown.selectedItem.position);
     }
 
-    private function get_component():Component {
+    private function get_component():Component
+    {
         return box;
     }
 }

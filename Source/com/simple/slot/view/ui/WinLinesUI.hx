@@ -4,15 +4,18 @@ import openfl.utils.Dictionary;
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 
-class WinLinesUI extends UIClip {
+class WinLinesUI extends UIClip
+{
 
     private var lineMap:Dictionary<String, DisplayObject>;
 
-    public function new(assets:Sprite) {
+    public function new(assets:Sprite)
+    {
         super(assets);
     }
 
-    override private function init():Void {
+    override private function init():Void
+    {
         super.init();
 
         lineMap = new Dictionary();

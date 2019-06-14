@@ -1,16 +1,16 @@
 package com.simple.slot.view.ui;
 
 import openfl.display.Sprite;
-import openfl.events.Event;
 import openfl.events.EventDispatcher;
 
-class UIClip extends EventDispatcher {
-
+class UIClip extends EventDispatcher
+{
     public var assets(get, never):Sprite;
 
     private var _assets:Sprite;
 
-    public function new(assets:Sprite) {
+    public function new(assets:Sprite)
+    {
         super();
 
         _assets = assets;
@@ -22,7 +22,8 @@ class UIClip extends EventDispatcher {
     {
     }
 
-    private function get_assets():Sprite {
+    private function get_assets():Sprite
+    {
         return _assets;
     }
 }

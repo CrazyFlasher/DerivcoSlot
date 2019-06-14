@@ -14,7 +14,8 @@ import openfl.events.Event;
 import openfl.Lib;
 import openfl.utils.Dictionary;
 
-class ReelUI extends UIClip {
+class ReelUI extends UIClip
+{
     private var model:ISingleReelModelImmutable;
 
     private var symbolMap:Dictionary<String, Sprite>;
@@ -24,7 +25,8 @@ class ReelUI extends UIClip {
     private var placeHolder:Sprite;
     private var symbolY:Float;
 
-    public function new(assets:Sprite, model:ISingleReelModelImmutable) {
+    public function new(assets:Sprite, model:ISingleReelModelImmutable)
+    {
         this.model = model;
 
         super(assets);

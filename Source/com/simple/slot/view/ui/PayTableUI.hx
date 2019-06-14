@@ -1,4 +1,5 @@
 package com.simple.slot.view.ui;
+
 import com.simple.slot.models.payTable.IPayTableItemModelImmutable;
 import com.simple.slot.models.payTable.IPayTableModelImmutable;
 import flash.text.TextFieldAutoSize;
@@ -11,7 +12,9 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.utils.Assets;
 import openfl.utils.Timer;
-class PayTableUI extends UIClip {
+
+class PayTableUI extends UIClip
+{
 
     private var model:IPayTableModelImmutable;
 
@@ -19,13 +22,15 @@ class PayTableUI extends UIClip {
 
     private var highLightTimer:Timer;
 
-    public function new(assets:Sprite, model:IPayTableModelImmutable) {
+    public function new(assets:Sprite, model:IPayTableModelImmutable)
+    {
         this.model = model;
 
         super(assets);
     }
 
-    override private function init():Void {
+    override private function init():Void
+    {
         super.init();
 
         highLightTimer = new Timer(1000, 1);
@@ -92,13 +97,15 @@ class PayTableItemUI extends UIClip
 
     private var blinkTimer:Timer;
 
-    public function new(assets:Sprite, model:IPayTableItemModelImmutable) {
+    public function new(assets:Sprite, model:IPayTableItemModelImmutable)
+    {
         _model = model;
 
         super(assets);
     }
 
-    override private function init():Void {
+    override private function init():Void
+    {
         super.init();
 
         blinkTimer = new Timer(250);
@@ -151,7 +158,8 @@ class PayTableItemUI extends UIClip
         highLightRect.visible = false;
     }
 
-    private function getNewTf(text:String):TextField {
+    private function getNewTf(text:String):TextField
+    {
 
         var tf:TextField = new TextField();
         tf.defaultTextFormat = new TextFormat("Arial", 18);
