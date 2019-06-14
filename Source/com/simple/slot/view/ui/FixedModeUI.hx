@@ -74,7 +74,7 @@ class FixedModeUI extends UIClip
     {
         _enabled = value;
 
-        itemsContainer.mouseEnabled = itemsContainer.mouseChildren = value;
+        itemsContainer.mouseEnabled = value;
         itemsContainer.alpha = value ? 1 : 0.5;
     }
 

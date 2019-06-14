@@ -23,6 +23,7 @@ class ButtonUI extends UIClip
 
         scaleOrigin = _assets.scaleX;
 
+        _assets.mouseChildren = false;
         _assets.buttonMode = true;
         _assets.addEventListener(MouseEvent.MOUSE_DOWN, down);
         _assets.addEventListener(MouseEvent.CLICK, click);
@@ -57,7 +58,7 @@ class ButtonUI extends UIClip
 
     private function set_enabled(value:Bool):Bool
     {
-        _assets.mouseEnabled = _assets.mouseChildren = value;
+        _assets.mouseEnabled = value;
 
         _assets.alpha = value ? 1.0 : 0.5;
 
