@@ -1,5 +1,6 @@
 package com.derivco.slot.view.ui;
 
+import motion.easing.Back;
 import Array;
 import flash.geom.Rectangle;
 import openfl.display.Graphics;
@@ -192,14 +193,14 @@ class ReelUI extends UIClip {
                 firstSymbolY -= symbol.height * model.symbolList.length;
             }
 
-            Actuate.tween(placeHolder, 0.25, {y: -firstSymbolY}).onComplete(
+            Actuate.tween(placeHolder, 0.4, {y: -firstSymbolY}).onComplete(
                 function():Void
                 {
                     showResult(0);
 
                     dispatchEvent(new Event(ReelUIEventType.REEL_STOPPED));
                 }
-            );
+            ).ease(Back.easeOut);
         }, Std.int(spinTime * 1000));
     }
 
