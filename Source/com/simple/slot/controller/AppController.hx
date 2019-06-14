@@ -77,6 +77,9 @@ class AppController extends EventDispatcher implements IAppController
 
     public function updateBalance(value:Int):IAppController
     {
+        if (value > 5000) value = 5000;
+        if (value < 1) value = 1;
+
         appModel.setBalance(value);
 
         return this;
