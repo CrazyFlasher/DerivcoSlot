@@ -1,4 +1,5 @@
-# SimpleSlot [![Build Status](https://travis-ci.org/CrazyFlasher/SimpleSlot.svg?branch=master)](https://travis-ci.org/CrazyFlasher/SimpleSlot)
+[![Build Status](https://travis-ci.org/CrazyFlasher/SimpleSlot.svg?branch=master)](https://travis-ci.org/CrazyFlasher/SimpleSlot)
+# SimpleSlot
 
 Simple slot machine, written in **Haxe** language using **OpenFL**. Compiles to all OpenFL targets.
 
