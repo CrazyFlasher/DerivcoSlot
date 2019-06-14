@@ -18,11 +18,5 @@
     {"symbolIdList": ["2xBAR", "BAR"], "payout":  5}
   ],
   "balance": 5000,
-  "spinCost": 1,
-  "isTampering": false,
-  "tamperReelValues": [
-    {"symbolId": "CHERRY", "lineId": "top"},
-    {"symbolId": "CHERRY", "lineId": "center"},
-    {"symbolId": "CHERRY", "lineId": "bottom"}
-  ]
+  "spinCost": 1
 }
