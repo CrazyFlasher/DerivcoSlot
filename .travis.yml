@@ -91,7 +91,7 @@ install:
   - haxelib install as3hx
   - haxelib install openfl
   - haxelib list
-  - haxelib run openfl setup
+  - haxelib run openfl setup < travisci_inputs.txt
 
 script:
-  - openfl run html5 -final < travisci_inputs.txt
+  - openfl run html5 -final
