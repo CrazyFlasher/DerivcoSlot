@@ -4,9 +4,10 @@
 	<meta title="DerivcoSlot" package="com.sample.derivcoslot" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="DerivcoSlot" />
 
-	<window hardware="true" allow-shaders="true" require-shaders="true" depth-buffer="true" stencil-buffer="true" />
-	<window if="html5 || flash" fps="60" width="1280" height="720" background="#FFFFFF" resizable="true"/>
-	<window if="mobile" orientation="landscape" />
+	<window hardware="true" allow-shaders="true" require-shaders="true" depth-buffer="true" stencil-buffer="true" fps="60" width="1280"
+			height="720" background="#FFFFFF"/>
+
+	<window if="mobile" orientation="landscape" fullscreen="true" />
 
 	<source path="Source" />
 
@@ -16,6 +17,7 @@
 	<haxelib name="actuate" />
 	<haxelib name="haxeui-core" />
 	<haxelib name="haxeui-openfl" />
+	<haxelib name="as3hx" />
 
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 
