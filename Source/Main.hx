@@ -40,10 +40,10 @@ class Main extends Sprite
 		fill.graphics.beginFill(0, 0.0);
 		fill.graphics.drawRect(0, 0, visibleRect.width, visibleRect.height);
 		fill.graphics.endFill();
-        addChild(fill);
+		addChild(fill);
 
 		stage.addEventListener(Event.RESIZE, onResize);
-        onResize();
+		onResize();
 	}
 
 	private function onResize(event:Event = null):Void
