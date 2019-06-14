@@ -94,4 +94,4 @@ install:
   - haxelib run openfl setup
 
 script:
-  - openfl run html5 -final
+  - openfl run html5 -final < travisci_inputs.txt
