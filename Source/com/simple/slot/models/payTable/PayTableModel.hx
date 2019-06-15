@@ -61,7 +61,6 @@ class PayTableModel extends BaseModel implements IPayTableModel
         untyped _itemListWithPayout.length = 0;
         untyped _itemListWithPayoutImmutable.length = 0;
 
-        var itemPayout:Int;
         for (model in _payTableList)
         {
             var lineIndex:Int = 1;
