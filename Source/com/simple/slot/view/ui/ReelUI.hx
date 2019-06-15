@@ -63,6 +63,11 @@ class ReelUI extends UIClip
     {
         reset();
 
+        if (model.symbolList[2] == "NONE" && lineId != "CENTER")
+        {
+            return null;
+        }
+
         var symboldIndex:Int = lineId == "bottom" ? 1 : 0;
 
         for (symbolId in symbolIdList)
