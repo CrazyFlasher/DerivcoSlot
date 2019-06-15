@@ -5,5 +5,5 @@ Simple slot machine, written in **Haxe** language using **OpenFL**. Compiles to 
 
 ---
 ###### Example binaries:
-* [JavaScript](http://188.166.108.195/slot/Export/html5/)
-* [Android](http://188.166.108.195/slot/Export/android/SimpleSlot-debug.apk)
+* [JavaScript](http://188.166.108.195/slot_2_sym_reel/Export/html5/)
+* [Android](http://188.166.108.195/slot_2_sym_reel/Export/android/SimpleSlot-debug.apk)
