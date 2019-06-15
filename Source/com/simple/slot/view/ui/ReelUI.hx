@@ -63,7 +63,7 @@ class ReelUI extends UIClip
     {
         reset();
 
-        if (model.symbolList[2] == "NONE" && lineId != "CENTER")
+        if (model.symbolList[2] == "NONE" && lineId != "center")
         {
             return null;
         }
