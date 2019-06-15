@@ -35,10 +35,6 @@ class FixedModeUI extends UIClip
 
         var main:VBox = new VBox();
 
-        #if mobile
-            main.scaleX = main.scaleY = 1.5;
-        #end
-
         main.addComponent(createHeader());
 
         //TODO: DropDown bug
