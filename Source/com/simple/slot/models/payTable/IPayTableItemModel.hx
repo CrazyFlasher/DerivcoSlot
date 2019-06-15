@@ -6,4 +6,5 @@ interface IPayTableItemModel extends IPayTableItemModelImmutable extends IBaseMo
 {
     function calculatePayout(lineSymbolList:Array<String>, lineId:String):Int;
     function reset():IPayTableItemModel;
+    function updateWinLineIndex():IPayTableItemModel;
 }

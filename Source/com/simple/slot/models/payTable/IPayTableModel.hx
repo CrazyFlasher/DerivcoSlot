@@ -7,4 +7,5 @@ interface IPayTableModel extends IPayTableModelImmutable extends IBaseModel
 {
     function reset():IPayTableModel;
     function calculatePayout(reelList:Array<ISingleReelModelImmutable>):IPayTableModel;
+    function updatePaytableItemWinLineIndex(value:Int):IPayTableModel;
 }

@@ -63,16 +63,7 @@ class ReelUI extends UIClip
     {
         reset();
 
-        var symboldIndex:Int = 0;
-
-        if (lineId == "center")
-        {
-            symboldIndex = 1;
-        } else
-        if (lineId == "bottom")
-        {
-            symboldIndex = 2;
-        }
+        var symboldIndex:Int = lineId == "bottom" ? 1 : 0;
 
         for (symbolId in symbolIdList)
         {
@@ -158,8 +149,7 @@ class ReelUI extends UIClip
     {
         reset();
 
-        var symbol:DisplayObject = symbolMap.get(model.symbolList[0]);
-        var firstSymbolY:Float = symbol.y + symbol.height / 2;
+        var firstSymbolY:Float = getFirstSymbolY();
         placeHolder.y = -firstSymbolY;
 
         untyped visibleSymbolList.length = 0;
@@ -167,7 +157,8 @@ class ReelUI extends UIClip
         for (symbol in symbolList)
         {
             var bounds:Rectangle = symbol.getBounds(placeHolder);
-            if (bounds.topLeft.y + placeHolder.y >= 0 && bounds.bottomRight.y + placeHolder.y < symbol.height * 4)
+
+            if (bounds.topLeft.y + placeHolder.y >= 0 && bounds.bottomRight.y + placeHolder.y < symbol.height * 3)
             {
                 visibleSymbolList.push(symbol);
             }
@@ -179,6 +170,24 @@ class ReelUI extends UIClip
         }
     }
 
+    private function getFirstSymbolY():Float
+    {
+        var symbol:DisplayObject = symbolMap.get(model.symbolList[0]);
+        var y:Float = symbol.y + symbol.height - (symbol.height / 4);
+
+        if (y - placeHolder.y > symbol.height * model.symbolList.length)
+        {
+            y -= symbol.height * model.symbolList.length;
+        }
+
+        if (model.symbolList[2] == "NONE")
+        {
+            y -= symbol.height / 2;
+        }
+
+        return y;
+    }
+
     private function animate(spinTime:Float):Void
     {
         _assets.addEventListener(Event.ENTER_FRAME, enterFrame);
@@ -186,15 +195,7 @@ class ReelUI extends UIClip
         Lib.setTimeout(function():Void{
             _assets.removeEventListener(Event.ENTER_FRAME, enterFrame);
 
-            var symbol:DisplayObject = symbolMap.get(model.symbolList[0]);
-            var firstSymbolY:Float = symbol.y + symbol.height / 2;
-
-            if (firstSymbolY - placeHolder.y > symbol.height * model.symbolList.length)
-            {
-                firstSymbolY -= symbol.height * model.symbolList.length;
-            }
-
-            Actuate.tween(placeHolder, 0.4, {y: -firstSymbolY}).onComplete(
+            Actuate.tween(placeHolder, 0.4, {y: -getFirstSymbolY()}).onComplete(
                 function():Void
                 {
                     showResult(0);

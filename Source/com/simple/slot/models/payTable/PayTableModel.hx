@@ -10,7 +10,9 @@ class PayTableModel extends BaseModel implements IPayTableModel
 
     private var _payTableList:Array<IPayTableItemModel> = new Array<IPayTableItemModel>();
     private var _payTableListImmutable:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
-    private var _itemListWithPayout:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
+
+    private var _itemListWithPayout:Array<IPayTableItemModel> = new Array<IPayTableItemModel>();
+    private var _itemListWithPayoutImmutable:Array<IPayTableItemModelImmutable> = new Array<IPayTableItemModelImmutable>();
 
     private var _payout:Int = 0;
 
@@ -39,7 +41,9 @@ class PayTableModel extends BaseModel implements IPayTableModel
 
     public function reset():IPayTableModel {
         _payout = 0;
+
         untyped _itemListWithPayout.length = 0;
+        untyped _itemListWithPayoutImmutable.length = 0;
 
         for (model in _payTableList)
         {
@@ -53,31 +57,60 @@ class PayTableModel extends BaseModel implements IPayTableModel
 
     public function calculatePayout(reelList:Array<ISingleReelModelImmutable>):IPayTableModel {
         _payout = 0;
+
         untyped _itemListWithPayout.length = 0;
+        untyped _itemListWithPayoutImmutable.length = 0;
 
         var itemPayout:Int;
         for (model in _payTableList)
         {
-            itemPayout = 0;
-
-            itemPayout += model.calculatePayout(getLineSymbolList(1, reelList), "top");
-            itemPayout += model.calculatePayout(getLineSymbolList(2, reelList), "center");
-            itemPayout += model.calculatePayout(getLineSymbolList(3, reelList), "bottom");
-
-            if (itemPayout > 0)
+            var lineIndex:Int = 1;
+            for (i in ["top", "center", "bottom"])
             {
-                _itemListWithPayout.push(model);
-            }
+                var value:Int = model.calculatePayout(getLineSymbolList(lineIndex, reelList), i);
+                lineIndex++;
 
-            _payout += itemPayout;
+                if (value > 0)
+                {
+                    _itemListWithPayout.push(model);
+                    _itemListWithPayoutImmutable.push(model);
+
+                    _payout += value;
+                }
+            }
         }
+
+        return this;
+    }
+
+    public function updatePaytableItemWinLineIndex(value:Int):IPayTableModel
+    {
+        _itemListWithPayout[value].updateWinLineIndex();
 
         return this;
     }
 
     private function getLineSymbolList(lineIndex:Int, reelList:Array<ISingleReelModelImmutable>):Array<String>
     {
-        return [reelList[0].symbolList[lineIndex], reelList[1].symbolList[lineIndex], reelList[2].symbolList[lineIndex]];
+        var result:Array<String> = new Array<String>();
+        for (reelModel in reelList)
+        {
+            if (!reelModel.containsNone())
+            {
+                if (lineIndex != 2)
+                {
+                    result.push(reelModel.symbolList[lineIndex == 1 ? lineIndex : 2]);
+                }
+            } else
+            {
+                if (lineIndex == 2)
+                {
+                    result.push(reelModel.symbolList[1]);
+                }
+            }
+        }
+
+        return result;
     }
 
     private function get_payout():Int {
@@ -89,6 +122,6 @@ class PayTableModel extends BaseModel implements IPayTableModel
     }
 
     private function get_itemListWithPayout():Array<IPayTableItemModelImmutable> {
-        return _itemListWithPayout;
+        return _itemListWithPayoutImmutable;
     }
 }

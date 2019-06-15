@@ -29,7 +29,7 @@ import Std;
 
 class AppView extends EventDispatcher
 {
-
+    public var highLightItemIndex(get, never):Int;
     public var fixedDataList(get, never):Array<FixedResultVo>;
     public var newBalanceValue(get, never):Int;
     public var newSpinCostValue(get, never):Int;
@@ -55,7 +55,7 @@ class AppView extends EventDispatcher
     private var linesUI:WinLinesUI;
     private var fixedModelUI:FixedModeUI;
 
-    private var highLightItemIndex:Int;
+    private var _highLightItemIndex:Int;
     private var highLightedSymbolIdList:Array<String> = new Array<String>();
 
     private var _newBalanceValue:Int;
@@ -218,14 +218,14 @@ class AppView extends EventDispatcher
 
     private function startHighLight():Void
     {
-        highLightItemIndex = 0;
+        _highLightItemIndex = 0;
 
         highLightNext();
     }
 
     private function highLightNext():Void
     {
-        var model:IPayTableItemModelImmutable = payTableModel.itemListWithPayout[highLightItemIndex];
+        var model:IPayTableItemModelImmutable = payTableModel.itemListWithPayout[_highLightItemIndex];
         payTableUI.highLightItem(model);
 
         untyped highLightedSymbolIdList.length = 0;
@@ -234,24 +234,26 @@ class AppView extends EventDispatcher
         {
             reelUI.reset();
 
-            var highLightedSymbolId:String = reelUI.highLightSymbol(model.symbolIdList, model.lastWinLine, highLightedSymbolIdList);
+            var highLightedSymbolId:String = reelUI.highLightSymbol(model.symbolIdList, model.winLineId, highLightedSymbolIdList);
             if (highLightedSymbolId != null)
             {
                 highLightedSymbolIdList.push(highLightedSymbolId);
             }
         }
 
-        linesUI.showLine(model.lastWinLine);
+        linesUI.showLine(model.winLineId);
+
+        dispatchEvent(new Event(AppViewEventType.PAYTABLE_ITEM_HIGHLIGHTED));
     }
 
     private function payTableUIHighLightComplete(event:Event):Void
     {
-        if (highLightItemIndex < payTableModel.itemListWithPayout.length - 1)
+        if (_highLightItemIndex < payTableModel.itemListWithPayout.length - 1)
         {
-            highLightItemIndex++;
+            _highLightItemIndex++;
         } else
         {
-            highLightItemIndex = 0;
+            _highLightItemIndex = 0;
         }
 
         highLightNext();
@@ -267,15 +269,23 @@ class AppView extends EventDispatcher
         return cast (assets.getChildByName(name), TextField);
     }
 
-    private function get_newBalanceValue():Int {
+    private function get_newBalanceValue():Int
+    {
         return _newBalanceValue;
     }
 
-    private function get_newSpinCostValue():Int {
+    private function get_newSpinCostValue():Int
+    {
         return _newSpinCostValue;
     }
 
-    private function get_fixedDataList():Array<FixedResultVo> {
+    private function get_fixedDataList():Array<FixedResultVo>
+    {
         return fixedModelUI.fixedDataList;
+    }
+
+    private function get_highLightItemIndex():Int
+    {
+        return _highLightItemIndex;
     }
 }

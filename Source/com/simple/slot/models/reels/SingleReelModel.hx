@@ -4,10 +4,11 @@ import com.simple.slot.models.common.BaseModel;
 
 class SingleReelModel extends BaseModel implements ISingleReelModel
 {
-
     public var symbolList(get, never):Array<Dynamic>;
 
     private var _symbolList:Array<Dynamic>;
+
+    private var replacedWithNoneSymbol:String;
 
     public function new()
     {
@@ -28,6 +29,8 @@ class SingleReelModel extends BaseModel implements ISingleReelModel
 
     public function spin(fixedResult:FixedResultVo = null):ISingleReelModel
     {
+        replaceNoneWithNormalSymbol();
+
         var displacement:Int = 0;
 
         if (fixedResult == null)
@@ -39,17 +42,52 @@ class SingleReelModel extends BaseModel implements ISingleReelModel
 
             shuffle(displacement);
 
-            displacement = -fixedResult.index;
+            var extra:Int = -fixedResult.index;
+            if (fixedResult.index > 1)
+            {
+                extra += 1;
+            }
+
+            displacement = extra;
         }
 
-        shuffle(displacement);
+        shuffle(displacement, (fixedResult == null && Math.random() > 0.5) || (fixedResult != null && fixedResult.index == 2));
 
         return this;
     }
 
-    private function shuffle(displacement:Int):Void
+    private function replaceNoneWithNormalSymbol():Void
+    {
+        if (replacedWithNoneSymbol != null)
+        {
+            for (i in 0..._symbolList.length)
+            {
+                if (_symbolList[i] == "NONE")
+                {
+                    _symbolList[i] = replacedWithNoneSymbol;
+
+                    break;
+                }
+            }
+
+            replacedWithNoneSymbol = null;
+        }
+    }
+
+    private function shuffle(displacement:Int, replaceWithNone:Bool = false):Void
     {
         var result:Array<Dynamic> = _symbolList.slice(0, displacement);
         _symbolList = _symbolList.splice(displacement, _symbolList.length).concat(result);
+
+        if (replaceWithNone)
+        {
+            replacedWithNoneSymbol = _symbolList[2];
+            _symbolList[2] = "NONE";
+        }
+    }
+
+    public function containsNone():Bool
+    {
+        return replacedWithNoneSymbol != null;
     }
 }

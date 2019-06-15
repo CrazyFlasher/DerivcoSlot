@@ -5,4 +5,6 @@ import openfl.events.IEventDispatcher;
 interface ISingleReelModelImmutable extends IEventDispatcher
 {
     public var symbolList(get, never):Array<Dynamic>;
+
+    public function containsNone():Bool;
 }
