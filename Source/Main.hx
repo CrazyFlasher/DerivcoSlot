@@ -1,6 +1,5 @@
 package;
 
-import haxe.ui.backend.ToolkitOptions;
 import com.simple.slot.context.AppContext;
 import haxe.ui.Toolkit;
 import openfl.display.DisplayObjectContainer;
@@ -8,12 +7,13 @@ import openfl.display.Sprite;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
+import openfl.Lib;
 import utils.RectangleUtil;
 import utils.ScaleMode;
 
 class Main extends Sprite
 {
-	private var visibleRect:Rectangle = new Rectangle(0, 0, 1280, 720);
+	private var visibleRect:Rectangle = new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 	private var stageRect:Rectangle = new Rectangle();
 	private var outRect:Rectangle = new Rectangle();
 

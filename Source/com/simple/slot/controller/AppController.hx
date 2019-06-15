@@ -92,4 +92,10 @@ class AppController extends EventDispatcher implements IAppController
         return this;
     }
 
+    public function updatePaytableItemWinLineIndex(value:Int):IAppController
+    {
+        payTableModel.updatePaytableItemWinLineIndex(value);
+
+        return this;
+    }
 }

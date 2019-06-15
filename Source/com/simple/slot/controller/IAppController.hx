@@ -10,4 +10,5 @@ interface IAppController extends IEventDispatcher
     function resultsShown():IAppController;
     function updateBalance(value:Int):IAppController;
     function updateSpinCost(value:Int):IAppController;
+    function updatePaytableItemWinLineIndex(value:Int):IAppController;
 }

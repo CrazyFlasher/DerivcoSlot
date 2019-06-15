@@ -4,8 +4,10 @@ import com.simple.slot.models.common.BaseModel;
 
 class PayTableItemModel extends BaseModel implements IPayTableItemModel
 {
+    public var winLineId(get, never):String;
+
     public var lastPayout(get, never):Int;
-    public var lastWinLine(get, never):String;
+    public var lastWinLineList(get, never):Array<String>;
 
     public var lineId(get, never):String;
     public var symbolIdList(get, never):Array<Dynamic>;
@@ -16,7 +18,9 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel
     private var _payout:Int;
 
     private var _lastPayout:Int;
-    private var _lastWinLine:String;
+    private var _lastWinLineList:Array<String> = new Array<String>();
+
+    private var winLineIndex:Int;
 
     public function new()
     {
@@ -32,14 +36,28 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel
     }
 
     public function reset():IPayTableItemModel {
+        winLineIndex = 0;
         _lastPayout = 0;
-        _lastWinLine = null;
+        untyped _lastWinLineList.length = 0;
 
         return this;
     }
 
-    public function calculatePayout(lineSymbolList:Array<String>, lineId:String):Int {
+    public function updateWinLineIndex():IPayTableItemModel
+    {
+        if (winLineIndex < _lastWinLineList.length - 1)
+        {
+            winLineIndex++;
+        } else
+        {
+            winLineIndex = 0;
+        }
 
+        return this;
+    }
+
+    public function calculatePayout(lineSymbolList:Array<String>, lineId:String):Int
+    {
         var currentLineSymbols:Array<String> = lineSymbolList.copy();
 
         if (_lineId == null || _lineId == lineId)
@@ -57,9 +75,9 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel
             trace("payout: " + lineSymbolList + ": " + lineId + ": value " + _payout);
 
             _lastPayout = _payout;
-            _lastWinLine = lineId;
+            _lastWinLineList.push(lineId);
 
-            return _lastPayout;
+            return _payout;
         }
 
         return 0;
@@ -81,7 +99,12 @@ class PayTableItemModel extends BaseModel implements IPayTableItemModel
         return _lastPayout;
     }
 
-    private function get_lastWinLine():String {
-        return _lastWinLine;
+    private function get_lastWinLineList():Array<String>
+    {
+        return _lastWinLineList;
+    }
+
+    public function get_winLineId():String {
+        return _lastWinLineList[winLineIndex];
     }
 }

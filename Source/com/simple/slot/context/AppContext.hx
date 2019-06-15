@@ -79,6 +79,11 @@ class AppContext implements IAppContext
         {
             controller.updateSpinCost(view.newSpinCostValue);
         });
+
+        view.addEventListener(AppViewEventType.PAYTABLE_ITEM_HIGHLIGHTED, function(e:Event):Void
+        {
+            controller.updatePaytableItemWinLineIndex(view.highLightItemIndex);
+        });
     }
 
     function get_appModel():IAppModel
