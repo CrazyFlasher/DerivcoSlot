@@ -13,7 +13,7 @@ import utils.ScaleMode;
 
 class Main extends Sprite
 {
-	private var visibleRect:Rectangle = new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
+	private var visibleRect:Rectangle = new Rectangle(0, 0, 960, 540);
 	private var stageRect:Rectangle = new Rectangle();
 	private var outRect:Rectangle = new Rectangle();
 
