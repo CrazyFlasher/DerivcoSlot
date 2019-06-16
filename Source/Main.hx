@@ -7,13 +7,12 @@ import openfl.display.Sprite;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
-import openfl.Lib;
 import utils.RectangleUtil;
 import utils.ScaleMode;
 
 class Main extends Sprite
 {
-	private var visibleRect:Rectangle = new Rectangle(0, 0, 960, 540);
+	private var visibleRect:Rectangle = new Rectangle(0, 0, 1280, 720);
 	private var stageRect:Rectangle = new Rectangle();
 	private var outRect:Rectangle = new Rectangle();
 
