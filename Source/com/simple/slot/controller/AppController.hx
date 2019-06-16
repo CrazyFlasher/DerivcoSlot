@@ -10,7 +10,7 @@ import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.utils.Assets;
 
-class AppController extends EventDispatcher implements IAppController
+class AppController extends EventDispatcher
 {
     private var appModel:IAppModel;
     private var reelsModel:IReelsModel;
@@ -25,7 +25,7 @@ class AppController extends EventDispatcher implements IAppController
         payTableModel = context.payTableModel;
     }
 
-    public function loadResources():IAppController
+    public function loadResources():AppController
     {
         var path:String = "assets/config.json";
 
@@ -51,7 +51,7 @@ class AppController extends EventDispatcher implements IAppController
         });
     }
 
-    public function spin(fixedDataList:Array<FixedResultVo>):IAppController
+    public function spin(fixedDataList:Array<FixedResultVo>):AppController
     {
 
         if (appModel.hasEnoughMoney)
@@ -68,14 +68,14 @@ class AppController extends EventDispatcher implements IAppController
         return this;
     }
 
-    public function resultsShown():IAppController
+    public function resultsShown():AppController
     {
         appModel.setLocked(false);
 
         return this;
     }
 
-    public function updateBalance(value:Int):IAppController
+    public function updateBalance(value:Int):AppController
     {
         if (value > 5000) value = 5000;
         if (value < 1) value = 1;
@@ -85,14 +85,14 @@ class AppController extends EventDispatcher implements IAppController
         return this;
     }
 
-    public function updateSpinCost(value:Int):IAppController
+    public function updateSpinCost(value:Int):AppController
     {
         appModel.setSpinCost(value);
 
         return this;
     }
 
-    public function updatePaytableItemWinLineIndex(value:Int):IAppController
+    public function updatePaytableItemWinLineIndex(value:Int):AppController
     {
         payTableModel.updatePaytableItemWinLineIndex(value);
 
