@@ -1,16 +1,15 @@
 package com.simple.slot.context;
 
-import com.simple.slot.controller.IAppController;
-import com.simple.slot.models.payTable.IPayTableModelImmutable;
-import com.simple.slot.models.reels.IReelsModelImmutable;
-import com.simple.slot.models.app.IAppModelImmutable;
-import com.simple.slot.models.payTable.IPayTableModel;
-import com.simple.slot.models.reels.IReelsModel;
-import com.simple.slot.models.app.IAppModel;
 import com.simple.slot.controller.AppController;
 import com.simple.slot.controller.AppControllerEventType;
 import com.simple.slot.models.app.AppModel;
+import com.simple.slot.models.app.IAppModel;
+import com.simple.slot.models.app.IAppModelImmutable;
+import com.simple.slot.models.payTable.IPayTableModel;
+import com.simple.slot.models.payTable.IPayTableModelImmutable;
 import com.simple.slot.models.payTable.PayTableModel;
+import com.simple.slot.models.reels.IReelsModel;
+import com.simple.slot.models.reels.IReelsModelImmutable;
 import com.simple.slot.models.reels.ReelsModel;
 import com.simple.slot.view.AppView;
 import com.simple.slot.view.AppViewEventType;
@@ -33,7 +32,7 @@ class AppContext implements IAppContext
 
     private var viewRoot:DisplayObjectContainer;
 
-    private var controller:IAppController;
+    private var controller:AppController;
 
     private var view:AppView;
 
