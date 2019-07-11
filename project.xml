@@ -19,6 +19,7 @@
 	<haxelib name="haxeui-core" />
 	<haxelib name="haxeui-openfl" />
 	<haxelib name="as3hx" />
+	<haxelib name="hexmachina" />
 
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 

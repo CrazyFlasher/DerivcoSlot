@@ -1,5 +1,6 @@
 package com.simple.slot.context;
 
+import hex.di.Injector;
 import com.simple.slot.controller.AppController;
 import com.simple.slot.controller.AppControllerEventType;
 import com.simple.slot.models.app.AppModel;
@@ -45,11 +46,17 @@ class AppContext implements IAppContext
 
     private function init():Void
     {
+        var factory:Injector = new Injector();
+        factory.map(IAppContext).toValue(this);
+        factory.map(AppController).toType(AppController);
+        factory.mapClassName("Array<String>").toValue(["a", "b", "c"]);
+        factory.mapClassName("Bool", "coolBool").toValue(true);
+
         _appModel = new AppModel();
         _reelsModel = new ReelsModel();
         _payTableModel = new PayTableModel();
 
-        controller = new AppController(this);
+        controller = factory.getInstance(AppController);
         controller.addEventListener(AppControllerEventType.RESOURCES_LOADED, createViews);
 
         controller.loadResources();

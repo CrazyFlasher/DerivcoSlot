@@ -1,5 +1,6 @@
 package com.simple.slot.controller;
 
+import hex.di.IInjectorContainer;
 import com.simple.slot.context.IAppContext;
 import com.simple.slot.models.app.IAppModel;
 import com.simple.slot.models.payTable.IPayTableModel;
@@ -10,15 +11,36 @@ import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.utils.Assets;
 
-class AppController extends EventDispatcher
+class AppController extends EventDispatcher implements IInjectorContainer
 {
     private var appModel:IAppModel;
     private var reelsModel:IReelsModel;
     private var payTableModel:IPayTableModel;
 
-    public function new(context:IAppContext)
+    @Inject("coolInt")
+    @Optional(true)
+    public var coolInt:Int;
+
+    @Inject("coolBool")
+    public var coolBool:Bool;
+
+    @Inject
+    public var arr:Array<String>;
+
+    @Inject
+    public var context:IAppContext;
+
+    public function new()
     {
         super();
+    }
+
+    @PostConstruct
+    public function init():Void
+    {
+        trace("arr " + arr);
+        trace("coolInt " + coolInt);
+        trace("coolBool " + coolBool);
 
         appModel = context.appModel;
         reelsModel = context.reelsModel;
