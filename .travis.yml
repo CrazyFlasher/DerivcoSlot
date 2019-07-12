@@ -86,6 +86,7 @@ install:
   - haxelib install hxjava
   - haxelib install hxcs
   - haxelib install actuate
+  - haxelib install hexmachina
   - haxelib install haxeui-core
   - haxelib install haxeui-openfl
   - haxelib install as3hx
